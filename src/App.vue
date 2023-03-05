@@ -1,5 +1,10 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
+import { useGlobalHeadMeta } from './composables/useHead/useGlobalHeadMeta';
+useGlobalHeadMeta('Abanoub - Portfolio Website',
+  "Welcome to my portfolio website! I am a Software Engineer with experience in Front End ,Vue.js . Here you can find examples of my work and learn more about my background and qualifications.",
+  "Abanoub, portfolio, Software Engineer,  Front End, Vue.js, Nuxt.js, Html5 , CSS3, Scss , Javacript, Js , Typescript"
+)
 </script>
 
 <template>
