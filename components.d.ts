@@ -20,7 +20,6 @@ declare module '@vue/runtime-core' {
     AServices: typeof import('./src/components/base/AServices.vue')['default']
     ASkills: typeof import('./src/components/base/ASkills.vue')['default']
     AWorks: typeof import('./src/components/base/AWorks.vue')['default']
-    HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }
