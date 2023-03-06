@@ -17,7 +17,7 @@
 
       <form ref="form" @submit.prevent="sendEmail" class="mt-5 p-8 flex flex-col gap-5 items-center">
         <input class="p-2 w-full md:w-1/2 ring-1 ring-indigo-300 rounded-sm dark:bg-slate-800 dark:ring-0 dark:text-white"
-          type="text" placeholder="Name Surname" name="user_name" v-model="userName" />
+          type="text" placeholder="Name Surname" name="from_name" v-model="userName" />
         <input class="p-2 w-full md:w-1/2 ring-1 ring-indigo-300 rounded-sm dark:bg-slate-800 dark:ring-0 dark:text-white"
           type="email" placeholder="Email" name="user_email" v-model="userEmail" />
         <textarea
