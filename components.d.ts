@@ -10,6 +10,10 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AAbout: typeof import('./src/components/base/AAbout.vue')['default']
+    AbAnimatedPlaceholder: typeof import('./src/components/utils/AbAnimatedPlaceholder.vue')['default']
+    AbCard: typeof import('./src/components/utils/AbCard.vue')['default']
+    AbCardSkeleten: typeof import('./src/components/utils/abCardSkeleten.vue')['default']
+    AbCardSkeleton: typeof import('./src/components/utils/AbCardSkeleton.vue')['default']
     AbDarkMode: typeof import('./src/components/utils/AbDarkMode.vue')['default']
     AbHamburger: typeof import('./src/components/utils/AbHamburger.vue')['default']
     AbTextModel: typeof import('./src/components/utils/AbTextModel.vue')['default']

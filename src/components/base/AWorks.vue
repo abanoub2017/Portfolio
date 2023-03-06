@@ -12,71 +12,84 @@
           into a well-designed websites
         </p>
       </div>
+
       <!-- bottom -->
       <div class="p-5 sm:p-0 flex flex-wrap justify-between">
-        <!-- card -->
-        <a href="https://www.mcdougallinsurance.com/" target="_blank"
-          class="w-full md:w-5/12 lg:w-1/5  mb-12 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
-          <img src="@/assets/img/work/Mc.png" class="object-cover h-full" />
-          <p class="dark:text-white text-center capitalize py-3">mcdougallinsurance</p>
-        </a>
-        <!-- card -->
-        <a href="https://dgsmithinsurance.com/" target="_blank"
-          class="w-full md:w-5/12 lg:w-1/5  mb-12 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
-          <img src="@/assets/img/work/Dg.png" class="object-cover h-full" />
-          <p class="dark:text-white text-center capitalize py-3">dgsmithinsurance</p>
-        </a>
-        <!-- card -->
-        <a href="https://platform.we.care/" target="_blank"
-          class="w-full md:w-5/12 lg:w-1/5  mb-12 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
-          <img src="@/assets/img/work/weCare.png" class="object-cover h-full" />
-          <p class="dark:text-white text-center capitalize py-3">We Care</p>
-        </a>
-        <!-- card -->
-        <a href="https://www.ccvinsurance.com/" target="_blank"
-          class="w-full md:w-5/12 lg:w-1/5  mb-12 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
-          <img src="@/assets/img/work/CCV.png" class="object-cover h-full" />
-          <p class="dark:text-white text-center capitalize py-3">ccvinsurance</p>
-        </a>
-        <!-- card -->
-        <a href="https://www.rogersinsurance.ca/" target="_blank"
-          class="w-full md:w-5/12 lg:w-1/5  mb-12 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
-          <img src="@/assets/img/work/rog.png" class="object-cover h-full" />
-          <p class="dark:text-white text-center capitalize py-3">rogersinsurance</p>
-        </a>
-        <!-- card -->
-        <a href="https://sharpinsurance.ca/" target="_blank"
-          class="w-full md:w-5/12 lg:w-1/5  mb-12 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
-          <img src="@/assets/img/work/sharp.png" class="object-cover h-full" />
-          <p class="dark:text-white text-center capitalize py-3">sharpinsurance</p>
-        </a>
-        <!-- card -->
-        <a href="https://trudocgroup.com" target="_blank"
-          class="w-full md:w-5/12 lg:w-1/5  mb-12 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
-          <img src="@/assets/img/work/trudoc.png" class="object-cover h-full" />
-          <p class="dark:text-white text-center capitalize py-3">trudocgroup</p>
-        </a>
-        <!-- card -->
-        <a href="https://sobekit.co.za/" target="_blank"
-          class="w-full md:w-5/12 lg:w-1/5  mb-12 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
-          <img src="@/assets/img/work/sobek.png" class="object-cover h-full" />
-          <p class="dark:text-white text-center capitalize py-3">sobekit</p>
-        </a>
 
-        <!-- <a href="https://reach.link/" target="_blank"
-          class="w-full md:w-5/12 lg:w-1/5  mb-12 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
-          <img src="@/assets/img/work/reach.png" class="object-cover h-full" />
-        </a>
-        <a href="https://www.axa-egypt.com/" target="_blank"
-          class="w-full md:w-5/12 lg:w-1/5  mb-12 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
-          <img src="@/assets/img/axa.png" class="object-cover h-full" />
-        </a> -->
+        <!-- card -->
+        <template v-if="workList">
+          <template v-for="work in workList">
+            <AbCard :link=work.link :img=work.img>
+              <template #content>
+                {{ work.content }}
+              </template>
+            </AbCard>
+          </template>
+        </template>
+        <template v-else>
+          <AbCardSkeleton v-for="item in 8"/>
+        </template>
       </div>
+    </div>
   </div>
-</div></template>
+</template>
   
 <script setup>
-
+import { ref } from 'vue';
+const workList = ref(
+  [
+    {
+      link: 'https://www.mcdougallinsurance.com/',
+      img: '/src/assets/img/work/Mc.png',
+      content: 'mcdougallinsurance'
+    },
+    {
+      link: 'https://dgsmithinsurance.com/',
+      img: '/src/assets/img/work/Dg.png',
+      content: 'dgsmithinsurance'
+    },
+    {
+      link: 'https://platform.we.care/',
+      img: '/src/assets/img/work/weCare.png',
+      content: 'We Care'
+    },
+    {
+      link: 'https://www.ccvinsurance.com/',
+      img: '/src/assets/img/work/CCV.png',
+      content: 'ccvinsurance'
+    },
+    {
+      link: 'https://www.rogersinsurance.ca/',
+      img: '/src/assets/img/work/rog.png',
+      content: 'rogersinsurance'
+    },
+    {
+      link: 'https://sharpinsurance.ca/',
+      img: '/src/assets/img/work/sharp.png',
+      content: 'sharpinsurance'
+    },
+    {
+      link: 'https://trudocgroup.com',
+      img: '/src/assets/img/work/trudoc.png',
+      content: 'trudocgroup'
+    },
+    {
+      link: 'https://sobekit.co.za/',
+      img: '/src/assets/img/work/sobek.png',
+      content: 'sobekit'
+    },
+    //  {
+    //   link:'https://reach.link/',
+    //   img:'/src/assets/img/work/reach.png',
+    //   content:'Reach Link'
+    //  },
+    //  {
+    //   link:'https://www.axa-egypt.com/',
+    //   img:'/src/assets/img/work/axa.png',
+    //   content:'Axa Egypt'
+    //  },
+  ]
+)
 </script>
   
 <style lang="scss" scoped></style>
