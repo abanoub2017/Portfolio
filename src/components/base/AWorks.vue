@@ -16,59 +16,59 @@
       <div class="p-5 sm:p-0 flex flex-wrap justify-between">
         <!-- card -->
         <a href="https://www.mcdougallinsurance.com/" target="_blank"
-          class="w-full md:w-5/12 lg:w-1/5 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
+          class="w-full md:w-5/12 lg:w-1/5  mb-12 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
           <img src="@/assets/img/work/Mc.png" class="object-cover h-full" />
           <p class="dark:text-white text-center capitalize py-3">mcdougallinsurance</p>
         </a>
         <!-- card -->
         <a href="https://dgsmithinsurance.com/" target="_blank"
-          class="w-full md:w-5/12 lg:w-1/5 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
+          class="w-full md:w-5/12 lg:w-1/5  mb-12 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
           <img src="@/assets/img/work/Dg.png" class="object-cover h-full" />
           <p class="dark:text-white text-center capitalize py-3">dgsmithinsurance</p>
         </a>
         <!-- card -->
         <a href="https://platform.we.care/" target="_blank"
-          class="w-full md:w-5/12 lg:w-1/5 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
+          class="w-full md:w-5/12 lg:w-1/5  mb-12 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
           <img src="@/assets/img/work/weCare.png" class="object-cover h-full" />
           <p class="dark:text-white text-center capitalize py-3">We Care</p>
         </a>
         <!-- card -->
         <a href="https://www.ccvinsurance.com/" target="_blank"
-          class="w-full md:w-5/12 lg:w-1/5 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
+          class="w-full md:w-5/12 lg:w-1/5  mb-12 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
           <img src="@/assets/img/work/CCV.png" class="object-cover h-full" />
           <p class="dark:text-white text-center capitalize py-3">ccvinsurance</p>
         </a>
         <!-- card -->
         <a href="https://www.rogersinsurance.ca/" target="_blank"
-          class="w-full md:w-5/12 lg:w-1/5 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
+          class="w-full md:w-5/12 lg:w-1/5  mb-12 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
           <img src="@/assets/img/work/rog.png" class="object-cover h-full" />
           <p class="dark:text-white text-center capitalize py-3">rogersinsurance</p>
         </a>
         <!-- card -->
         <a href="https://sharpinsurance.ca/" target="_blank"
-          class="w-full md:w-5/12 lg:w-1/5 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
+          class="w-full md:w-5/12 lg:w-1/5  mb-12 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
           <img src="@/assets/img/work/sharp.png" class="object-cover h-full" />
           <p class="dark:text-white text-center capitalize py-3">sharpinsurance</p>
         </a>
         <!-- card -->
         <a href="https://trudocgroup.com" target="_blank"
-          class="w-full md:w-5/12 lg:w-1/5 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
+          class="w-full md:w-5/12 lg:w-1/5  mb-12 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
           <img src="@/assets/img/work/trudoc.png" class="object-cover h-full" />
           <p class="dark:text-white text-center capitalize py-3">trudocgroup</p>
         </a>
         <!-- card -->
         <a href="https://sobekit.co.za/" target="_blank"
-          class="w-full md:w-5/12 lg:w-1/5 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
+          class="w-full md:w-5/12 lg:w-1/5  mb-12 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
           <img src="@/assets/img/work/sobek.png" class="object-cover h-full" />
           <p class="dark:text-white text-center capitalize py-3">sobekit</p>
         </a>
 
         <!-- <a href="https://reach.link/" target="_blank"
-          class="w-full md:w-5/12 lg:w-1/5 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
+          class="w-full md:w-5/12 lg:w-1/5  mb-12 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
           <img src="@/assets/img/work/reach.png" class="object-cover h-full" />
         </a>
         <a href="https://www.axa-egypt.com/" target="_blank"
-          class="w-full md:w-5/12 lg:w-1/5 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
+          class="w-full md:w-5/12 lg:w-1/5  mb-12 shadow-xl rounded-lg my-3 md:my-10 m-1 transition-all hover:scale-110">
           <img src="@/assets/img/axa.png" class="object-cover h-full" />
         </a> -->
       </div>
