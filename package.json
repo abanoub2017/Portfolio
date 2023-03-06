@@ -11,6 +11,7 @@
     "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' http://localhost:4173 'cypress open --e2e'"
   },
   "dependencies": {
+    "@emailjs/browser": "^3.10.0",
     "@vueuse/core": "^9.13.0",
     "pinia": "^2.0.32",
     "unhead": "^1.1.15",
