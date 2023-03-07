@@ -17,12 +17,12 @@
 
       <form ref="form" @submit.prevent="sendEmail" class="mt-5 p-8 flex flex-col gap-5 items-center">
         <input class="p-2 w-full md:w-1/2 ring-1 ring-indigo-300 rounded-sm dark:bg-slate-800 dark:ring-0 dark:text-white"
-          type="text" placeholder="Name Surname" name="from_name" v-model="userName" />
+          type="text" placeholder="Name Surname" name="from_name" v-model="userName" required/>
         <input class="p-2 w-full md:w-1/2 ring-1 ring-indigo-300 rounded-sm dark:bg-slate-800 dark:ring-0 dark:text-white"
-          type="email" placeholder="Email" name="user_email" v-model="userEmail" />
+          type="email" placeholder="Email" name="user_email" v-model="userEmail" required />
         <textarea
           class="p-2 w-full md:w-1/2 ring-1 ring-indigo-300 rounded-sm dark:bg-slate-800 dark:ring-0 dark:text-white"
-          cols="30" rows="10" placeholder="Message..." name="message" v-model="userMessgae"></textarea>
+          cols="30" rows="10" placeholder="Message..." name="message" v-model="userMessgae" required></textarea>
         <button type="submit" value="Send" :disabled="loading"
           class="w-1/2 bg-indigo-600 text-white font-medium px-3 py-2 text-center rounded-md cursor-pointer">
           <template v-if="loading">

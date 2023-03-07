@@ -16,6 +16,7 @@ declare module '@vue/runtime-core' {
     AbDarkMode: typeof import('./src/components/utils/AbDarkMode.vue')['default']
     AbHamburger: typeof import('./src/components/utils/AbHamburger.vue')['default']
     AbTextModel: typeof import('./src/components/utils/AbTextModel.vue')['default']
+    AbToast: typeof import('./src/components/utils/AbToast.vue')['default']
     AbTypewriter: typeof import('./src/components/utils/AbTypewriter.vue')['default']
     AContact: typeof import('./src/components/base/AContact.vue')['default']
     AFooter: typeof import('./src/components/base/AFooter.vue')['default']
