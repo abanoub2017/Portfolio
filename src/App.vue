@@ -12,9 +12,10 @@ useGlobalHeadMeta('Abanoub - Portfolio Website',
   <ANav />
   <RouterView v-slot="{ Component, route }">
     <Transition name="fade" mode="out-in">
-      <!-- <div :key="route.name"> -->
+      <!-- <div :key="route.name">
         <component :is="Component" />
-      <!-- </div> -->
+      </div> -->
+      <HomeView/>
     </Transition>
   </RouterView>
   <AFooter />
