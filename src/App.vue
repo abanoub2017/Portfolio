@@ -8,8 +8,9 @@ useGlobalHeadMeta('Abanoub - Portfolio Website',
 </script>
 
 <template>
-  <ANav />
 
+  <ANav />
+  <AAbout />
   <RouterView v-slot="{ Component, route }">
     <Transition name="fade" mode="out-in">
       <div :key="route.name">
