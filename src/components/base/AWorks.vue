@@ -16,10 +16,10 @@
       <!-- bottom -->
       <div class="p-5 sm:p-0 flex flex-wrap justify-between">
         <!-- card -->
-        <template v-for="work in workList">
+        <template v-for="work in workList" :key="work">
           <AbCard 
             :link=work.link
-            :img=work.img
+            :img=getImageUrl(work.img)
           >
             <template #content>
               {{work.content}}
@@ -37,56 +37,60 @@ const workList =  ref(
   [
    {
     link:'https://www.mcdougallinsurance.com/',
-    img:'https://abanoubgeorge.info/img/work/Mc.png',
+    // img:'@/src/img/work/Mc.png',
+    img:'Mc.png',
     content:'mcdougallinsurance'
    },
    {
     link:'https://dgsmithinsurance.com/',
-    img:'https://abanoubgeorge.info/img/work/Dg.png',
+    img:'Dg.png',
     content:'dgsmithinsurance'
    },
    {
     link:'https://platform.we.care/',
-    img:'https://abanoubgeorge.info/img/work/weCare.png',
+    img:'weCare.png',
     content:'We Care'
    },
    {
     link:'https://www.ccvinsurance.com/',
-    img:'https://abanoubgeorge.info/img/work/CCV.png',
+    img:'CCV.png',
     content:'ccvinsurance'
    },
    {
     link:'https://www.rogersinsurance.ca/',
-    img:'https://abanoubgeorge.info/img/work/rog.png',
+    img:'rog.png',
     content:'rogersinsurance'
    },
    {
     link:'https://sharpinsurance.ca/',
-    img:'https://abanoubgeorge.info/img/work/sharp.png',
+    img:'sharp.png',
     content:'sharpinsurance'
    },
    {
     link:'https://trudocgroup.com',
-    img:'https://abanoubgeorge.info/img/work/trudoc.png',
+    img:'trudoc.png',
     content:'trudocgroup'
    },
    {
     link:'https://sobekit.co.za/',
-    img:'https://abanoubgeorge.info/img/work/sobek.png',
+    img:'sobek.png',
     content:'sobekit'
    },
   //  {
   //   link:'https://reach.link/',
-  //   img:'https://abanoubgeorge.info/img/work/reach.png',
+  //   img:'reach.png',
   //   content:'Reach Link'
   //  },
   //  {
   //   link:'https://www.axa-egypt.com/',
-  //   img:'https://abanoubgeorge.info/img/work/axa.png',
+  //   img:'axa.png',
   //   content:'Axa Egypt'
   //  },
   ]
 )
+const getImageUrl = (name) => {
+        return new URL(`../../assets/img/work/${name}`, import.meta.url).href
+    }
 </script>
   
 <style lang="scss" scoped></style>

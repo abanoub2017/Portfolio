@@ -17,7 +17,7 @@ export default defineConfig({
      * @see https://github.com/antfu/unplugin-vue-components
      */
     Components({
-      dirs: ["src/components", "src/layouts"],
+      dirs: ["src/components", "src/layouts", "src/views"],
       extensions: ["vue", "md"],
       dts: true,
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
