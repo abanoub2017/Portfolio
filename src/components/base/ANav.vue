@@ -3,7 +3,7 @@
         <div class="nav__container">
             <div class="flex items-center gap-1 px-1">
                 <img class="w-8 rounded-lg" src="@/assets/img/profile.png" alt="logo" />
-                <span class="text-2xl font-bold text-indigo-900 dark:text-white">Banoub.</span>
+                <span class="text-2xl font-bold text-indigo-900 dark:text-white">Banoub. github change</span>
             </div>
             <ul class="nav__main-menu ">
                 <li class="nav__main-menu__link ">
