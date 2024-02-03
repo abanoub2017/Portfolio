@@ -33,3 +33,7 @@ jobs:
 
     - name: Cleanup
       run: rm -rf dist
+      
+    - name: Cleanup temporary folder
+      run: rm -rf github-pages-deploy-action-temp-deployment-folder
+    
