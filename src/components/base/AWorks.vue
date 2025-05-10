@@ -36,11 +36,23 @@ import { ref } from 'vue';
 const workList =  ref(
   [
    {
-    link:'https://www.mcdougallinsurance.com/',
+      link:'https://www.kemitt.com/',
     // img:'@/src/img/work/Mc.png',
-    img:'Mc.png',
-    content:'mcdougallinsurance'
-   },
+      img:'kemitt.png',
+      content:'kemitt'
+    },
+    {
+      link: 'https://ads.nabd.com/',
+      // img:'@/src/img/work/Mc.png',
+      img: 'Nabd.png',
+      content: 'Nabd'
+    },
+    {
+      link: 'https://www.mcdougallinsurance.com/',
+      // img:'@/src/img/work/Mc.png',
+      img: 'Mc.png',
+      content: 'mcdougallinsurance'
+    },
    {
     link:'https://dgsmithinsurance.com/',
     img:'Dg.png',
