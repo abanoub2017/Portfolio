@@ -1,12 +1,14 @@
 <template>
     <!-- Skills -->
-    <div id="skills" class="px-5 dark:bg-slate-900">
+    <div id="skills" class="px-5 dark:bg-slate-900" ref="target">
         <div class="container mx-auto py-10 flex flex-col-reverse lg:flex-row items-center gap-20">
             <!-- left -->
             <div class="relative hidden md:block">
-                <img class="h-1/4 absolute top-0 left-0 -z-10" src="@/assets/img/dots.png" alt="" />
+                <img class="h-1/4 absolute top-0 left-0 -z-10" src="@/assets/img/dots.png" alt="" loading="lazy" />
                 <div class="h-full rounded-full overflow-hidden">
-                    <img src="@/assets/img/soft-skills.png" alt="" />
+                    <img src="@/assets/img/soft-skills.png" alt="Skills illustration" loading="lazy"
+                        class="transition-opacity duration-300"
+                        :class="{ 'opacity-0': !isIntersecting, 'opacity-100': isIntersecting }" />
                 </div>
             </div>
             <!-- right -->
@@ -31,7 +33,7 @@
                         class=" bg-[#fc657e] text-white rounded-xl cursor-pointer shadow-sm  p-2 hover:shadow-lg transition-all">Jquery</span>
                     <span
                         class=" bg-[#f5c84c] text-white rounded-xl cursor-pointer shadow-sm  p-2 hover:shadow-lg transition-all">Git</span>
-                        <span
+                    <span
                         class=" bg-[#f5c84c] text-white rounded-xl cursor-pointer shadow-sm  p-2 hover:shadow-lg transition-all">GitHub</span>
                     <span
                         class=" bg-[#87d147] text-white rounded-xl cursor-pointer shadow-sm  p-2 hover:shadow-lg transition-all">Vue.js</span>
@@ -92,9 +94,14 @@
         </div>
     </div>
 </template>
-    
-<script setup>
 
+<script setup>
+import { useIntersectionObserver } from '@/composables/useIntersectionObserver';
+
+const { target, isIntersecting } = useIntersectionObserver({
+    threshold: 0.2,
+    rootMargin: '50px'
+});
 </script>
-    
+
 <style lang="scss" scoped></style>

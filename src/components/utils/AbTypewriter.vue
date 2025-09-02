@@ -5,7 +5,7 @@
         <p class="typed-text text-red-500">{{ typeValue }}</p>
     </div>
 </template>
-  
+
 <script>
 export default {
     name: "typeWiriter",
@@ -13,7 +13,7 @@ export default {
         return {
             typeValue: "",
             typeStatus: false,
-            displayTextArray: [ "Developer", "Blogger", "Designer", "Freelancer"],
+            displayTextArray: ["Developer", "Blogger", "Designer", "Freelancer"],
             typingSpeed: 100,
             erasingSpeed: 100,
             newTextDelay: 2000,
@@ -58,7 +58,7 @@ export default {
     },
 };
 </script>
-  
+
 <style lang="scss" scoped>
-@import url('@/assets/scss/AbTypeWriter.scss');
+@use '@/assets/scss/AbTypeWriter.scss';
 </style>
