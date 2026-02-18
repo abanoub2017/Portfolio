@@ -8,7 +8,7 @@
             <ul class="nav__main-menu">
                 <li v-for="item in navItems" :key="item.id" class="nav__main-menu__link"
                     :class="{ 'nav__main-menu__link--active': activeSection === item.id }">
-                    <a v-smooth-scroll :href="`#${item.id}`">{{ item.label }}</a>
+                    <a v-smooth-scroll :href="`#${item.id}`" @click="activeSection = item.id">{{ item.label }}</a>
                 </li>
             </ul>
             <div class="flex items-center justify-center gap-5">
@@ -42,7 +42,7 @@ const navItems: NavItem[] = [
 const activeSection = ref<string>('home')
 let observer: IntersectionObserver | null = null
 
-onMounted(() => {
+function setupObserver(): void {
     observer = new IntersectionObserver(
         (entries: IntersectionObserverEntry[]) => {
             entries.forEach((entry) => {
@@ -51,13 +51,38 @@ onMounted(() => {
                 }
             })
         },
-        { threshold: 0, rootMargin: '-10% 0px -60% 0px' }
+        { threshold: 0, rootMargin: '-20% 0px -75% 0px' }
     )
 
+    let observedCount = 0
     navItems.forEach(({ id }) => {
         const el = document.getElementById(id)
-        if (el) observer!.observe(el)
+        if (el) {
+            observer!.observe(el)
+            observedCount++
+        }
     })
+    return observedCount
+}
+
+onMounted(() => {
+    // Sections render inside a lazy-loaded RouterView, so they may not
+    // be in the DOM yet when ANav mounts. Retry until all sections are found.
+    const trySetup = (): void => {
+        const count = setupObserver()
+        if (count < navItems.length) {
+            observer?.disconnect()
+            setTimeout(trySetup, 200)
+        }
+    }
+    trySetup()
+
+    // If the page loaded with a hash, set the active section immediately
+    if (window.location.hash) {
+        const hashId = window.location.hash.slice(1)
+        const match = navItems.find((item) => item.id === hashId)
+        if (match) activeSection.value = match.id
+    }
 })
 
 onUnmounted(() => {

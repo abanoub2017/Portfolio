@@ -148,7 +148,7 @@ const sendEmail = async (): Promise<void> => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({
-        access_key: 'YOUR_WEB3FORMS_ACCESS_KEY',
+        access_key: import.meta.env.VITE_WEB3FORMS_KEY,
         name: userName.value,
         email: userEmail.value,
         message: userMessage.value,

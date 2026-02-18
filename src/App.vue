@@ -21,6 +21,20 @@ onMounted(() => {
   }, 400)
 })
 
+watch(isLoading, (loading: boolean) => {
+  if (!loading && window.location.hash) {
+    // After the loading screen dismisses, restore scroll position to
+    // the hashed section (browser's native scroll was blocked by the
+    // invisible overlay during initial load).
+    const el = document.querySelector(window.location.hash)
+    if (el) {
+      setTimeout(() => {
+        el.scrollIntoView({ behavior: 'smooth' })
+      }, 50)
+    }
+  }
+})
+
 watch(isReady, (ready: boolean) => {
   if (ready && minTimeElapsed.value) {
     isLoading.value = false
