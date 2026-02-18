@@ -1,15 +1,19 @@
 <template>
-    <div
-        class="hidden lg:flex flex-col gap-5 rounded-md shadow-lg absolute top-0 bottom-0 m-auto right-10 bg-white dark:bg-slate-900 dark:shadow-slate-800 p-6 h-fit w-1/3">
-        <h1 class="text-4xl font-bold text-indigo-900">Hi, I'm Abanoub</h1>
-        <p class="text-gray-400">
-            with over 4 years of experience in web design and development. I have a strong ability to work in a team
-            environment or independently, and can handle multiple tasks
-            under pressure. My expertise includes developing new user-facing features, optimizing web pages for maximum
-            speed and scalability.
+    <div class="w-full max-w-md flex flex-col gap-5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-7">
+        <div>
+            <p class="text-indigo-400 font-semibold text-xs uppercase tracking-widest mb-1">Senior Frontend Engineer</p>
+            <h1 class="text-3xl lg:text-4xl font-bold text-white leading-tight">Hi, I'm Abanoub</h1>
+        </div>
+        <p class="text-slate-300 text-sm leading-relaxed">
+            I build fast, accessible, and scalable web products with Vue 3, TypeScript, and Tailwind CSS.
+            5+ years delivering pixel-perfect interfaces and production-grade frontend architecture.
         </p>
-        <a class="bg-indigo-600 text-white text-xl px-3 py-2 rounded-md font-semibold w-fit" href="#contact"
-            @click="trackHireMe">Hire Me</a>
+        <div class="flex flex-wrap gap-3">
+            <a class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors"
+                href="#contact" @click="trackHireMe">Hire Me</a>
+            <a class="border border-white/30 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-white/10 transition-colors"
+                href="#works">See My Work</a>
+        </div>
     </div>
 </template>
 

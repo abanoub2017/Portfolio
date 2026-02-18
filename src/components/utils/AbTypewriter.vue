@@ -1,8 +1,8 @@
 <template>
-    <div
-        class="absolute top-1/3 left-5 text-xl sm:left-10 sm:text-4xl md:left-1/4 md:text-6xl lg:left-5 xl:left-48 xl:text-7xl font-bold">
-        <span class="text-gray-600">Front End </span>
-        <p class="typed-text text-red-500">{{ typeValue }}</p>
+    <div class="font-bold">
+        <span class="block text-3xl sm:text-4xl lg:text-5xl text-white leading-tight">Front End</span>
+        <span class="block text-3xl sm:text-4xl lg:text-5xl text-indigo-400 min-h-[1.2em]">{{ typeValue }}<span
+                class="typed-cursor">|</span></span>
     </div>
 </template>
 
@@ -10,17 +10,19 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const typeValue = ref<string>('')
-const displayTextArray: string[] = ['Developer', 'Blogger', 'Designer', 'Freelancer']
+const displayTextArray: string[] = ['Developer', 'Engineer', 'Designer', 'Freelancer']
 const typingSpeed = 100
 const erasingSpeed = 100
 const newTextDelay = 2000
 let displayTextArrayIndex = 0
 let charIndex = 0
-let timerId: ReturnType<typeof setTimeout> | null = null
+let timerId: ReturnType<typeof setTimeout> | undefined = undefined
 
 function typeText() {
-    if (charIndex < displayTextArray[displayTextArrayIndex].length) {
-        typeValue.value += displayTextArray[displayTextArrayIndex].charAt(charIndex)
+    const current = displayTextArray[displayTextArrayIndex]
+    if (!current) return
+    if (charIndex < current.length) {
+        typeValue.value += current.charAt(charIndex)
         charIndex++
         timerId = setTimeout(typeText, typingSpeed)
     } else {
@@ -29,8 +31,10 @@ function typeText() {
 }
 
 function eraseText() {
+    const current = displayTextArray[displayTextArrayIndex]
+    if (!current) return
     if (charIndex > 0) {
-        typeValue.value = displayTextArray[displayTextArrayIndex].substring(0, charIndex - 1)
+        typeValue.value = current.substring(0, charIndex - 1)
         charIndex--
         timerId = setTimeout(eraseText, erasingSpeed)
     } else {

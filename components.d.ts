@@ -18,6 +18,7 @@ declare module 'vue' {
     AbTypewriter: typeof import('./src/components/utils/AbTypewriter.vue')['default']
     AContact: typeof import('./src/components/base/AContact.vue')['default']
     AFooter: typeof import('./src/components/base/AFooter.vue')['default']
+    AHero: typeof import('./src/components/base/AHero.vue')['default']
     ANav: typeof import('./src/components/base/ANav.vue')['default']
     AServices: typeof import('./src/components/base/AServices.vue')['default']
     ASkills: typeof import('./src/components/base/ASkills.vue')['default']
