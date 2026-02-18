@@ -17,7 +17,7 @@ body {
   }
 
   .nav {
-    @apply w-full fixed top-0 bg-white z-10 dark:bg-slate-900;
+    @apply w-full fixed top-0 bg-white z-[999] dark:bg-slate-900;
   }
 
   .nav__container {

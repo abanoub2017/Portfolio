@@ -1,62 +1,122 @@
 <template>
-    <!-- Skills -->
-    <div id="skills" class="dark:bg-slate-900 section-spacing" ref="target">
-        <div class="container mx-auto flex flex-col-reverse lg:flex-row items-center gap-20">
-            <!-- left -->
-            <div class="relative hidden md:block">
-                <img class="h-1/4 absolute top-0 left-0 -z-10" src="@/assets/img/dots.png" alt="" loading="lazy" />
-                <div class="h-full rounded-full overflow-hidden">
-                    <img src="@/assets/img/soft-skills.png" alt="Skills illustration" loading="lazy"
-                        class="transition-opacity duration-300"
-                        :class="{ 'opacity-0': !isIntersecting, 'opacity-100': isIntersecting }" />
+    <section id="skills" class="bg-gray-50 dark:bg-slate-900 section-spacing" ref="target">
+        <div class="container mx-auto">
+
+            <!-- header -->
+            <div class="section-header mb-14">
+                <p class="section-label">Skills</p>
+                <h2 class="section-title">Areas of Expertise</h2>
+                <p class="section-subtitle">Technologies and tools I work with on a daily basis</p>
+            </div>
+
+            <!-- category cards grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+                <div v-for="category in categories" :key="category.title"
+                    class="bg-white dark:bg-slate-800/80 rounded-2xl p-6 border border-gray-100 dark:border-slate-600 flex flex-col gap-5 transition-transform duration-300 hover:-translate-y-1"
+                    :class="{ 'opacity-0 translate-y-4': !isIntersecting, 'opacity-100 translate-y-0': isIntersecting }"
+                    style="transition: opacity 0.5s ease, transform 0.5s ease">
+                    <!-- icon + title -->
+                    <div class="flex items-center gap-3">
+                        <span class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0"
+                            :class="category.iconBg">
+                            {{ category.icon }}
+                        </span>
+                        <h3 class="font-bold text-gray-800 dark:text-white text-sm">{{ category.title }}</h3>
+                    </div>
+
+                    <!-- skill rows with proficiency bar -->
+                    <div class="flex flex-col gap-3">
+                        <div v-for="skill in category.skills" :key="skill.label" class="flex flex-col gap-1">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs font-medium text-gray-600 dark:text-gray-300">{{ skill.label
+                                }}</span>
+                                <span class="text-xs text-gray-400 dark:text-gray-500">{{ skill.level }}%</span>
+                            </div>
+                            <div class="h-1.5 bg-gray-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                                <div class="h-full rounded-full transition-all duration-700" :class="category.barColor"
+                                    :style="{ width: isIntersecting ? skill.level + '%' : '0%' }" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- right -->
-            <div class="my-auto   gap-3">
-                <h2 class="section-label">Areas of Expertise</h2>
-                <p class="text-gray-400">
-                    As a web developer and graphic designer Take a look at some of my key skills below:
-                </p>
-                <div class="flex justify-start flex-wrap gap-4 my-3 w-full md:w-3/4 ">
-                    <span v-for="skill in skills" :key="skill.label" :style="{ backgroundColor: skill.color }"
-                        class="text-white rounded-xl cursor-pointer shadow-sm p-2 hover:shadow-lg transition-all">
-                        {{ skill.label }}
-                    </span>
+
+            <!-- extra tools row -->
+            <div
+                class="mt-8 bg-white dark:bg-slate-800/80 rounded-2xl p-6 border border-gray-100 dark:border-slate-600">
+                <p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-4">Also
+                    worked with</p>
+                <div class="flex flex-wrap gap-2">
+                    <span v-for="tool in extras" :key="tool"
+                        class="text-xs font-medium bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300 px-3 py-1.5 rounded-full">{{
+                            tool }}</span>
                 </div>
             </div>
+
         </div>
-    </div>
+    </section>
 </template>
 
 <script setup lang="ts">
 import { useIntersectionObserver } from '@/composables/useIntersectionObserver'
 
-interface Skill {
-    label: string
-    color: string
-}
+const { target, isIntersecting } = useIntersectionObserver({ threshold: 0.15, rootMargin: '50px' })
 
-const { target, isIntersecting } = useIntersectionObserver({
-    threshold: 0.2,
-    rootMargin: '50px',
-})
+interface Skill { label: string; level: number }
+interface Category { title: string; icon: string; iconBg: string; barColor: string; skills: Skill[] }
 
-const skills: Skill[] = [
-    { label: 'HTML5', color: '#fc657e' },
-    { label: 'CSS3', color: '#fc657e' },
-    { label: 'SASS', color: '#fc657e' },
-    { label: 'Bootstrap 4/5', color: '#70d6f9' },
-    { label: 'JavaScript', color: '#fc657e' },
-    { label: 'jQuery', color: '#fc657e' },
-    { label: 'TypeScript', color: '#3178c6' },
-    { label: 'Git', color: '#f5c84c' },
-    { label: 'GitHub', color: '#f5c84c' },
-    { label: 'Vue.js', color: '#87d147' },
-    { label: 'Nuxt.js', color: '#87d147' },
-    { label: 'Angular', color: '#dd1b16' },
-    { label: 'Figma', color: '#a259ff' },
-    { label: 'Adobe XD', color: '#ff61f6' },
+const categories: Category[] = [
+    {
+        title: 'Frontend Core',
+        icon: '🌐',
+        iconBg: 'bg-orange-50 dark:bg-orange-900/30',
+        barColor: 'bg-orange-400',
+        skills: [
+            { label: 'HTML5', level: 98 },
+            { label: 'CSS3 / SASS', level: 95 },
+            { label: 'JavaScript (ES6+)', level: 92 },
+            { label: 'TypeScript', level: 88 },
+        ],
+    },
+    {
+        title: 'Frameworks',
+        icon: '⚡',
+        iconBg: 'bg-indigo-50 dark:bg-indigo-900/30',
+        barColor: 'bg-indigo-500',
+        skills: [
+            { label: 'Vue 3', level: 95 },
+            { label: 'Nuxt 3 / 4', level: 90 },
+            { label: 'Angular', level: 80 },
+            { label: 'Bootstrap 4/5', level: 90 },
+        ],
+    },
+    {
+        title: 'Tooling & DevOps',
+        icon: '🔧',
+        iconBg: 'bg-teal-50 dark:bg-teal-900/30',
+        barColor: 'bg-teal-500',
+        skills: [
+            { label: 'Git / GitHub', level: 92 },
+            { label: 'GitHub Actions / CI-CD', level: 82 },
+            { label: 'Vite / Webpack', level: 85 },
+            { label: 'AI Tools (Copilot, GPT)', level: 90 },
+        ],
+    },
+    {
+        title: 'Design & UX',
+        icon: '🎨',
+        iconBg: 'bg-purple-50 dark:bg-purple-900/30',
+        barColor: 'bg-purple-500',
+        skills: [
+            { label: 'Tailwind CSS', level: 93 },
+            { label: 'Figma', level: 78 },
+            { label: 'Adobe XD', level: 72 },
+            { label: 'Responsive Design', level: 96 },
+        ],
+    },
 ]
+
+const extras = ['jQuery', 'Pinia', 'Vuex', 'REST APIs', 'GraphQL', 'Jira', 'Trello', 'Agile / Scrum', 'Jest', 'Vitest']
 </script>
 
 <style lang="scss" scoped></style>
