@@ -5,24 +5,10 @@
                 <img class="w-8 rounded-lg" src="@/assets/img/profile.png" alt="logo" />
                 <span class="text-2xl font-bold text-indigo-900 dark:text-white">Banoub.</span>
             </div>
-            <ul class="nav__main-menu ">
-                <li class="nav__main-menu__link ">
-                    <a v-smooth-scroll href="#home">Home</a>
-                </li>
-                <li class="nav__main-menu__link">
-                    <a v-smooth-scroll href="#about">about me</a>
-                </li>
-                <!-- <li class="nav__main-menu__link">
-                    <a v-smooth-scroll href="#services">services</a>
-                </li> -->
-                <li class="nav__main-menu__link">
-                    <a v-smooth-scroll href="#skills">Skills</a>
-                </li>
-                <li class="nav__main-menu__link">
-                    <a v-smooth-scroll href="#works">works</a>
-                </li>
-                <li class="nav__main-menu__link">
-                    <a v-smooth-scroll href="#contact">contact</a>
+            <ul class="nav__main-menu">
+                <li v-for="item in navItems" :key="item.id" class="nav__main-menu__link"
+                    :class="{ 'nav__main-menu__link--active': activeSection === item.id }">
+                    <a v-smooth-scroll :href="`#${item.id}`">{{ item.label }}</a>
                 </li>
             </ul>
             <div class="flex items-center justify-center gap-5">
@@ -34,10 +20,57 @@
         </div>
     </nav>
 </template>
-  
-<script setup>
 
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
 
+interface NavItem {
+    id: string
+    label: string
+}
+
+const navItems: NavItem[] = [
+    { id: 'home', label: 'Home' },
+    { id: 'about', label: 'About me' },
+    { id: 'services', label: 'Services' },
+    { id: 'skills', label: 'Skills' },
+    { id: 'works', label: 'Works' },
+    { id: 'testimonials', label: 'Testimonials' },
+    { id: 'contact', label: 'Contact' },
+]
+
+const activeSection = ref<string>('home')
+let observer: IntersectionObserver | null = null
+
+onMounted(() => {
+    observer = new IntersectionObserver(
+        (entries: IntersectionObserverEntry[]) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    activeSection.value = entry.target.id
+                }
+            })
+        },
+        { threshold: 0, rootMargin: '-10% 0px -60% 0px' }
+    )
+
+    navItems.forEach(({ id }) => {
+        const el = document.getElementById(id)
+        if (el) observer!.observe(el)
+    })
+})
+
+onUnmounted(() => {
+    observer?.disconnect()
+})
 </script>
-  
-<style lang="scss" scoped></style>
+
+<style lang="scss" scoped>
+.nav__main-menu__link--active a {
+    color: #4f46e5;
+    /* indigo-600 */
+    font-weight: 700;
+    border-bottom: 2px solid #4f46e5;
+    padding-bottom: 2px;
+}
+</style>

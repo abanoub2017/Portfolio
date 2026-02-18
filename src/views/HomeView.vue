@@ -24,29 +24,30 @@
   <!-- About -->
   <AAbout />
   <!-- Services -->
-  <!-- <AServices /> -->
+  <AServices />
   <!-- Skills -->
   <ASkills />
   <!-- Works -->
   <AWorks />
+  <!-- Testimonials -->
+  <ATestimonials />
   <!-- Contact -->
   <AContact />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useGlobalLoading } from '@/composables/useGlobalLoading'
 
-const heroImageLoaded = ref(false)
+const heroImageLoaded = ref<boolean>(false)
 const { markHeroImageReady, markInitialContentReady } = useGlobalLoading()
 
-const onHeroImageLoad = () => {
+const onHeroImageLoad = (): void => {
   heroImageLoaded.value = true
   markHeroImageReady()
 }
 
 onMounted(() => {
-  // Mark initial content as ready after a short delay
   setTimeout(() => {
     markInitialContentReady()
   }, 100)

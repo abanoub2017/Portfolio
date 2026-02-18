@@ -1,36 +1,42 @@
-<script setup>
+<script setup lang="ts">
 import { RouterView } from 'vue-router'
-import { ref, onMounted } from 'vue'
-import { useGlobalHeadMeta } from './composables/useHead/useGlobalHeadMeta';
+import { ref, watch, onMounted } from 'vue'
+import { useGlobalHeadMeta } from './composables/useHead/useGlobalHeadMeta'
+import { useGlobalLoading } from './composables/useGlobalLoading'
 
-useGlobalHeadMeta('Abanoub - Portfolio Website',
-  "Welcome to my portfolio website! I am a Software Engineer with experience in Front End ,Vue.js . Here you can find examples of my work and learn more about my background and qualifications.",
-  "Abanoub, portfolio, Software Engineer,  Front End, Vue.js, Nuxt.js, Html5 , CSS3, Scss , Javacript, Js , Typescript"
+useGlobalHeadMeta(
+  'Abanoub George — Front-End Developer & Vue.js Specialist',
+  'Portfolio of Abanoub George, a Front-End Developer with 4+ years of experience building fast, responsive web apps with Vue.js, Nuxt.js and modern CSS.',
+  'Abanoub George, portfolio, Front-End Developer, Vue.js, Nuxt.js, HTML5, CSS3, SCSS, JavaScript, TypeScript'
 )
 
-// Simple loading state
-const isLoading = ref(true)
+const { isReady } = useGlobalLoading()
+const isLoading = ref<boolean>(true)
+const minTimeElapsed = ref<boolean>(false)
 
 onMounted(() => {
-  // Hide loading screen after initial mount and a small delay
   setTimeout(() => {
+    minTimeElapsed.value = true
+    if (isReady.value) isLoading.value = false
+  }, 400)
+})
+
+watch(isReady, (ready: boolean) => {
+  if (ready && minTimeElapsed.value) {
     isLoading.value = false
-  }, 500) // Adjust this timing as needed
+  }
 })
 </script>
 
 <template>
-  <!-- Loading Screen -->
+  <!-- Loading Screen — rendered on top as a fixed overlay -->
   <Transition name="loading-fade" appear>
     <div v-if="isLoading" class="fixed inset-0 bg-white dark:bg-slate-900 z-50 flex items-center justify-center">
       <div class="text-center">
-        <!-- Logo/Brand -->
         <div class="flex items-center gap-2 justify-center mb-6">
           <img class="w-12 rounded-lg" src="@/assets/img/profile.png" alt="logo" />
           <span class="text-3xl font-bold text-indigo-900 dark:text-white">Banoub.</span>
         </div>
-
-        <!-- Loading Animation -->
         <div class="relative">
           <div class="w-16 h-16 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mx-auto"></div>
           <div class="mt-4 text-gray-600 dark:text-gray-300 text-sm">Loading Portfolio...</div>
@@ -39,20 +45,18 @@ onMounted(() => {
     </div>
   </Transition>
 
-  <!-- Main App Content -->
-  <Transition name="content-fade" appear>
-    <div v-if="!isLoading">
-      <ANav />
-      <RouterView v-slot="{ Component, route }">
-        <Transition name="fade" mode="out-in">
-          <div :key="route.name">
-            <component :is="Component" />
-          </div>
-        </Transition>
-      </RouterView>
-      <AFooter />
-    </div>
-  </Transition>
+  <!-- Main App Content — always in the DOM so hero image can load and mark isReady -->
+  <main :class="{ 'invisible': isLoading }">
+    <ANav />
+    <RouterView v-slot="{ Component, route }">
+      <Transition name="fade" mode="out-in">
+        <div :key="route.name">
+          <component :is="Component" />
+        </div>
+      </Transition>
+    </RouterView>
+    <AFooter />
+  </main>
 </template>
 
 <style lang="scss">
@@ -74,15 +78,6 @@ onMounted(() => {
 
 .loading-fade-enter-from,
 .loading-fade-leave-to {
-  opacity: 0;
-}
-
-/* Content transitions */
-.content-fade-enter-active {
-  transition: opacity 0.5s ease;
-}
-
-.content-fade-enter-from {
   opacity: 0;
 }
 </style>

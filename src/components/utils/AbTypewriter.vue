@@ -6,57 +6,46 @@
     </div>
 </template>
 
-<script>
-export default {
-    name: "typeWiriter",
-    data: () => {
-        return {
-            typeValue: "",
-            typeStatus: false,
-            displayTextArray: ["Developer", "Blogger", "Designer", "Freelancer"],
-            typingSpeed: 100,
-            erasingSpeed: 100,
-            newTextDelay: 2000,
-            displayTextArrayIndex: 0,
-            charIndex: 0,
-        };
-    },
-    created() {
-        setTimeout(this.typeText, this.newTextDelay + 200);
-    },
-    methods: {
-        typeText() {
-            if (this.charIndex < this.displayTextArray[this.displayTextArrayIndex].length) {
-                if (!this.typeStatus) this.typeStatus = true;
-                this.typeValue += this.displayTextArray[this.displayTextArrayIndex].charAt(
-                    this.charIndex
-                );
-                this.charIndex += 1;
-                setTimeout(this.typeText, this.typingSpeed);
-            } else {
-                this.typeStatus = false;
-                setTimeout(this.eraseText, this.newTextDelay);
-            }
-        },
-        eraseText() {
-            if (this.charIndex > 0) {
-                if (!this.typeStatus) this.typeStatus = true;
-                this.typeValue = this.displayTextArray[this.displayTextArrayIndex].substring(
-                    0,
-                    this.charIndex - 1
-                );
-                this.charIndex -= 1;
-                setTimeout(this.eraseText, this.erasingSpeed);
-            } else {
-                this.typeStatus = false;
-                this.displayTextArrayIndex += 1;
-                if (this.displayTextArrayIndex >= this.displayTextArray.length)
-                    this.displayTextArrayIndex = 0;
-                setTimeout(this.typeText, this.typingSpeed + 1000);
-            }
-        },
-    },
-};
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
+
+const typeValue = ref<string>('')
+const displayTextArray: string[] = ['Developer', 'Blogger', 'Designer', 'Freelancer']
+const typingSpeed = 100
+const erasingSpeed = 100
+const newTextDelay = 2000
+let displayTextArrayIndex = 0
+let charIndex = 0
+let timerId: ReturnType<typeof setTimeout> | null = null
+
+function typeText() {
+    if (charIndex < displayTextArray[displayTextArrayIndex].length) {
+        typeValue.value += displayTextArray[displayTextArrayIndex].charAt(charIndex)
+        charIndex++
+        timerId = setTimeout(typeText, typingSpeed)
+    } else {
+        timerId = setTimeout(eraseText, newTextDelay)
+    }
+}
+
+function eraseText() {
+    if (charIndex > 0) {
+        typeValue.value = displayTextArray[displayTextArrayIndex].substring(0, charIndex - 1)
+        charIndex--
+        timerId = setTimeout(eraseText, erasingSpeed)
+    } else {
+        displayTextArrayIndex = (displayTextArrayIndex + 1) % displayTextArray.length
+        timerId = setTimeout(typeText, typingSpeed + 1000)
+    }
+}
+
+onMounted(() => {
+    timerId = setTimeout(typeText, newTextDelay + 200)
+})
+
+onUnmounted(() => {
+    clearTimeout(timerId)
+})
 </script>
 
 <style lang="scss" scoped>

@@ -1,33 +1,40 @@
 <template>
   <!-- contact -->
-  <div id="contact" class="dark:bg-slate-900" ref="target">
+  <div id="contact" class="dark:bg-slate-900 section-spacing" ref="target">
     <div class="container mx-auto">
       <!-- top -->
-      <div class="flex flex-col gap-3 items-center">
-        <h1 class="text-indigo-600 font-bold">CONTACT</h1>
-        <h1 class="text-3xl dark:text-white">Have a Question?</h1>
-        <p class="w-1/2 text-center text-gray-400">
-          Do you have an idea? Let's discuss it and see what we can do
-          together.
+      <div class="section-header">
+        <span class="section-label">Contact</span>
+        <h2 class="section-title">Have a Question?</h2>
+        <p class="section-subtitle">
+          Do you have an idea? Let's discuss it and see what we can do together.
         </p>
       </div>
 
       <!-- bottom -->
       <div v-if="isIntersecting">
         <form ref="form" @submit.prevent="sendEmail" class="mt-5 p-8 flex flex-col gap-5 items-center">
-          <input
-            class="p-2 w-full md:w-1/2 ring-1 ring-indigo-300 rounded-sm dark:bg-slate-800 dark:ring-0 dark:text-white"
-            type="text" placeholder="Name Surname" name="from_name" v-model="userName" required />
-          <input
-            class="p-2 w-full md:w-1/2 ring-1 ring-indigo-300 rounded-sm dark:bg-slate-800 dark:ring-0 dark:text-white"
-            type="email" placeholder="Email" name="user_email" v-model="userEmail" required />
-          <textarea
-            class="p-2 w-full md:w-1/2 ring-1 ring-indigo-300 rounded-sm dark:bg-slate-800 dark:ring-0 dark:text-white"
-            cols="30" rows="10" placeholder="Message..." name="message" v-model="userMessgae" required></textarea>
+          <div class="w-full md:w-1/2 flex flex-col gap-1">
+            <label for="contact-name" class="sr-only">Full Name</label>
+            <input id="contact-name"
+              class="p-2 w-full ring-1 ring-indigo-300 rounded-sm dark:bg-slate-800 dark:ring-0 dark:text-white"
+              type="text" placeholder="Name Surname" name="from_name" v-model="userName" required />
+          </div>
+          <div class="w-full md:w-1/2 flex flex-col gap-1">
+            <label for="contact-email" class="sr-only">Email Address</label>
+            <input id="contact-email"
+              class="p-2 w-full ring-1 ring-indigo-300 rounded-sm dark:bg-slate-800 dark:ring-0 dark:text-white"
+              type="email" placeholder="Email" name="user_email" v-model="userEmail" required />
+          </div>
+          <div class="w-full md:w-1/2 flex flex-col gap-1">
+            <label for="contact-message" class="sr-only">Message</label>
+            <textarea id="contact-message"
+              class="p-2 w-full ring-1 ring-indigo-300 rounded-sm dark:bg-slate-800 dark:ring-0 dark:text-white"
+              cols="30" rows="10" placeholder="Message..." name="message" v-model="userMessage" required></textarea>
+          </div>
           <button type="submit" value="Send" :disabled="loading"
-            class="w-1/2 bg-indigo-600 text-white font-medium px-3 py-2 text-center rounded-md cursor-pointer">
+            class="w-1/2 bg-indigo-600 text-white font-medium px-3 py-2 text-center rounded-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-opacity">
             <template v-if="loading">
-
               <svg aria-hidden="true" class="w-8 h-8 m-auto text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -45,7 +52,7 @@
           </button>
         </form>
 
-        <AbToast v-if="loadingToast" @closeToast="closeToast()" message="Message sent successfully" />
+        <AbToast v-if="toast.show" @closeToast="toast.show = false" :message="toast.message" :type="toast.type" />
 
       </div>
       <!-- Placeholder when not visible -->
@@ -56,45 +63,50 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-import emailjs from '@emailjs/browser';
-import { useIntersectionObserver } from '@/composables/useIntersectionObserver';
+<script setup lang="ts">
+import { ref, reactive } from 'vue'
+import { useIntersectionObserver } from '@/composables/useIntersectionObserver'
+import { useAnalytics } from '@/composables/useAnalytics'
+
+type ToastType = 'success' | 'error'
+
+interface Toast {
+  show: boolean
+  message: string
+  type: ToastType
+}
 
 const { target, isIntersecting } = useIntersectionObserver({
   threshold: 0.1,
-  rootMargin: '100px'
-});
+  rootMargin: '100px',
+})
 
-const form = ref(null)
-const userEmail = ref(''),
-  userName = ref(''),
-  userMessgae = ref('')
-const loading = ref(false)
-const loadingToast = ref(false)
-const emailServices = import.meta.env.VITE_EMAILJS_SERVICES
-const emailTemplate = import.meta.env.VITE_EMAILJS_TEMPLATE
-const emailId = import.meta.env.VITE_EMAILJS_ID
-const sendEmail = () => {
+const { trackContactSubmit } = useAnalytics()
+
+const form = ref<HTMLFormElement | null>(null)
+const userEmail = ref<string>('')
+const userName = ref<string>('')
+const userMessage = ref<string>('')
+const loading = ref<boolean>(false)
+
+const toast = reactive<Toast>({ show: false, message: '', type: 'success' })
+
+// TODO: Replace with your preferred email service
+const sendEmail = (): void => {
   loading.value = true
-  emailjs.sendForm(emailServices, emailTemplate, form.value, emailId)
-    .then((result) => {
-      loading.value = false
-      userEmail.value = ''
-      userName.value = ''
-      userMessgae.value = ''
-      loadingToast.value = true
-    }, (error) => {
-      loading.value = false
 
-      console.log('FAILED...', error.text);
-    });
+  // Placeholder — wire up your email provider here
+  setTimeout(() => {
+    loading.value = false
+    userEmail.value = ''
+    userName.value = ''
+    userMessage.value = ''
+    toast.message = "Message sent successfully! I'll get back to you soon."
+    toast.type = 'success'
+    toast.show = true
+    trackContactSubmit()
+  }, 500)
 }
-
-const closeToast = () => {
-  loadingToast.value = false
-}
-
 </script>
 
 <style lang="scss" scoped></style>

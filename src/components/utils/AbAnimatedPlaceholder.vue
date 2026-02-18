@@ -1,13 +1,10 @@
 <template>
-      <div class=" bg-gradient-to-r from-gray-100 animate-pulse ">
-        &nbsp;
-      </div>
+  <div class=" bg-gradient-to-r from-gray-100 animate-pulse ">
+    &nbsp;
+  </div>
 </template>
 
-<script setup>
-
+<script setup lang="ts">
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

@@ -1,21 +1,21 @@
 import { ref, onMounted, onUnmounted } from "vue";
 
-export function useIntersectionObserver(options = {}) {
-  const isIntersecting = ref(false);
-  const target = ref(null);
+export function useIntersectionObserver(options: IntersectionObserverInit = {}) {
+  const isIntersecting = ref<boolean>(false);
+  const target = ref<HTMLElement | null>(null);
 
-  let observer = null;
+  let observer: IntersectionObserver | null = null;
 
   onMounted(() => {
     if (!target.value) return;
 
     observer = new IntersectionObserver(
-      ([entry]) => {
+      ([entry]: IntersectionObserverEntry[]) => {
         isIntersecting.value = entry.isIntersecting;
       },
       {
         threshold: 0.1,
-        rootMargin: "50px",
+        rootMargin: '50px',
         ...options,
       }
     );

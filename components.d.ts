@@ -21,6 +21,7 @@ declare module 'vue' {
     ANav: typeof import('./src/components/base/ANav.vue')['default']
     AServices: typeof import('./src/components/base/AServices.vue')['default']
     ASkills: typeof import('./src/components/base/ASkills.vue')['default']
+    ATestimonials: typeof import('./src/components/base/ATestimonials.vue')['default']
     AWorks: typeof import('./src/components/base/AWorks.vue')['default']
     HomeView: typeof import('./src/views/HomeView.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
