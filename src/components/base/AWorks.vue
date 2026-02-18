@@ -1,38 +1,34 @@
 <template>
   <!-- works -->
-  <div id="works" class="dark:bg-slate-900 section-spacing" ref="target">
+  <section id="works" class="bg-white dark:bg-slate-900 section-spacing" ref="target">
     <div class="container mx-auto">
-      <!-- top -->
-      <div class="section-header">
+
+      <!-- header -->
+      <div class="section-header mb-14">
         <span class="section-label">Portfolio</span>
         <h2 class="section-title">Works &amp; Projects</h2>
         <p class="section-subtitle">
-          I help designers, small agencies and businesses bring their ideas to
-          life. Powered by Figma, VS Code and coffee, I turn your requirements
-          into well-designed websites.
+          A selection of real-world products I've helped design and build.
         </p>
       </div>
 
-      <!-- bottom -->
-      <div class="p-5 sm:p-0 flex flex-wrap justify-between">
-        <!-- Loading state -->
+      <!-- grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
+        <!-- skeletons -->
         <template v-if="!isIntersecting">
           <AbCardSkeleton v-for="n in 8" :key="n" />
         </template>
 
-        <!-- Actual content when visible -->
+        <!-- cards -->
         <template v-else>
-          <template v-for="work in workList" :key="work.content">
-            <AbCard :link="work.link" :img="getImageUrl(work.img)">
-              <template #content>
-                {{ work.content }}
-              </template>
-            </AbCard>
-          </template>
+          <AbCard v-for="work in workList" :key="work.link" :link="work.link" :img="getImageUrl(work.img)"
+            :title="work.content" :tag="work.tag" />
         </template>
       </div>
+
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup lang="ts">
