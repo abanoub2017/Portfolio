@@ -7,6 +7,16 @@ export const routes: RouteRecordRaw[] = [
     name: 'home',
     component: () => import('../views/HomeView.vue'),
   },
+  {
+    path: '/blog',
+    name: 'blog',
+    component: () => import('../views/BlogListView.vue'),
+  },
+  {
+    path: '/blog/:slug',
+    name: 'blog-post',
+    component: () => import('../views/BlogPostView.vue'),
+  },
 
   // ─── Admin ────────────────────────────────────────────────────────────────
   {
@@ -34,6 +44,21 @@ export const routes: RouteRecordRaw[] = [
         path: 'seo',
         name: 'admin-seo',
         component: () => import('../views/admin/AdminSeoSettings.vue'),
+      },
+      {
+        path: 'blog',
+        name: 'admin-blog',
+        component: () => import('../views/admin/AdminBlogList.vue'),
+      },
+      {
+        path: 'blog/new',
+        name: 'admin-blog-new',
+        component: () => import('../views/admin/AdminBlogEditor.vue'),
+      },
+      {
+        path: 'blog/:id/edit',
+        name: 'admin-blog-edit',
+        component: () => import('../views/admin/AdminBlogEditor.vue'),
       },
     ],
   },

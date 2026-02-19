@@ -18,6 +18,9 @@ const pageTitle = computed(() => {
         'admin-dashboard': 'Dashboard',
         'admin-section-edit': 'Edit Section',
         'admin-seo': 'SEO Settings',
+        'admin-blog': 'Blog Posts',
+        'admin-blog-new': 'New Post',
+        'admin-blog-edit': 'Edit Post',
         'admin-login': 'Admin Login',
     }
     const label = name ? (map[name] ?? 'Admin') : 'Admin'
@@ -80,6 +83,19 @@ async function handleSignOut(): Promise<void> {
                             d="M21 21l-4.35-4.35M17 11A6 6 0 111 11a6 6 0 0116 0z" />
                     </svg>
                     <span v-if="sidebarOpen">SEO Settings</span>
+                </router-link>
+
+                <!-- Blog Posts -->
+                <router-link :to="{ name: 'admin-blog' }"
+                    class="flex items-center py-2 rounded-xl text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-colors duration-150"
+                    :class="sidebarOpen ? 'gap-3 px-3' : 'justify-center px-2'"
+                    active-class="!bg-indigo-600/20 !text-indigo-400">
+                    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                        stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />
+                    </svg>
+                    <span v-if="sidebarOpen">Blog Posts</span>
                 </router-link>
             </nav>
 

@@ -16,9 +16,19 @@ const { isReady } = useGlobalLoading()
 const isLoading = ref<boolean>(true)
 const minTimeElapsed = ref<boolean>(false)
 
+// Only the home page (/) has components that signal heroImage + initialContent ready.
+// All other routes should resolve the loading screen immediately.
+const isHomePage = computed(() => route.path === '/')
+
 onMounted(() => {
   // Load SEO config from Firestore (non-blocking, head tags update reactively)
   seoStore.load()
+
+  // Non-home routes don't have hero/content loading signals — bypass the spinner
+  if (!isHomePage.value) {
+    isLoading.value = false
+    return
+  }
 
   setTimeout(() => {
     minTimeElapsed.value = true
@@ -38,7 +48,7 @@ watch(isLoading, (loading: boolean) => {
 })
 
 watch(isReady, (ready: boolean) => {
-  if (ready && minTimeElapsed.value) {
+  if (ready && minTimeElapsed.value && isHomePage.value) {
     isLoading.value = false
   }
 })

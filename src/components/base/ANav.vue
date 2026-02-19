@@ -10,6 +10,10 @@
                     :class="{ 'nav__main-menu__link--active': activeSection === item.id }">
                     <a v-smooth-scroll :href="`#${item.id}`" @click="activeSection = item.id">{{ item.label }}</a>
                 </li>
+                <li class="nav__main-menu__link"
+                    :class="{ 'nav__main-menu__link--active': route.path.startsWith('/blog') }">
+                    <RouterLink to="/blog">Blog</RouterLink>
+                </li>
             </ul>
             <div class="flex items-center justify-center gap-5">
                 <!-- Dark Mode -->
@@ -23,6 +27,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
 
 interface NavItem {
     id: string
@@ -40,6 +45,7 @@ const navItems: NavItem[] = [
 ]
 
 const activeSection = ref<string>('home')
+const route = useRoute()
 let observer: IntersectionObserver | null = null
 
 function setupObserver(): void {
