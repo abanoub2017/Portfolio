@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useHead } from '@unhead/vue'
 import { useAuthStore } from '@/stores/auth'
+
+useHead({
+    title: 'Admin Login — Portfolio CMS',
+    meta: [{ name: 'robots', content: 'noindex, nofollow' }],
+})
 
 const router = useRouter()
 const authStore = useAuthStore()

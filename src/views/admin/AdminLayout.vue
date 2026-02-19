@@ -1,12 +1,33 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import { useHead } from '@unhead/vue'
+import { computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import AdminToast from '@/components/admin/AdminToast.vue'
 
 const router = useRouter()
+const route = useRoute()
 const authStore = useAuthStore()
 const sidebarOpen = ref(true)
+
+// Dynamic title per admin sub-page; noindex keeps it out of search engines
+const pageTitle = computed(() => {
+    const name = route.name as string | undefined
+    const map: Record<string, string> = {
+        'admin-dashboard': 'Dashboard',
+        'admin-section-edit': 'Edit Section',
+        'admin-seo': 'SEO Settings',
+        'admin-login': 'Admin Login',
+    }
+    const label = name ? (map[name] ?? 'Admin') : 'Admin'
+    return `${label} — Portfolio CMS`
+})
+
+useHead({
+    title: pageTitle,
+    meta: [{ name: 'robots', content: 'noindex, nofollow' }],
+})
 
 async function handleSignOut(): Promise<void> {
     await authStore.signOut()
