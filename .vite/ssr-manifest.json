@@ -48,10 +48,10 @@
     "/assets/profile-Dwgir-Hs.png"
   ],
   "node_modules/@formkit/drag-and-drop/index.mjs": [
-    "/assets/AdminDashboard-DaYxN32Q.js"
+    "/assets/AdminDashboard-B5c1etMR.js"
   ],
   "node_modules/@formkit/drag-and-drop/vue/index.mjs": [
-    "/assets/AdminDashboard-DaYxN32Q.js"
+    "/assets/AdminDashboard-B5c1etMR.js"
   ],
   "node_modules/@unhead/vue/dist/client.mjs": [
     "/assets/profile-Dwgir-Hs.png"
@@ -105,7 +105,7 @@
     "/assets/profile-Dwgir-Hs.png"
   ],
   "node_modules/browser-image-compression/dist/browser-image-compression.mjs": [
-    "/assets/AdminSectionEdit-RiWrGnXk.js"
+    "/assets/AdminSectionEdit-TiOf7gdm.js"
   ],
   "node_modules/firebase/app/dist/esm/index.esm.js": [
     "/assets/profile-Dwgir-Hs.png"
@@ -147,7 +147,7 @@
     "/assets/profile-Dwgir-Hs.png"
   ],
   "src/assets/img/man2.png": [
-    "/assets/HomeView-ByX1YJLl.js",
+    "/assets/HomeView-Ch2dfHJI.js",
     "/assets/HomeView-Buo-6RvD.css",
     "/assets/man2-CEyIhXB9.png"
   ],
@@ -158,34 +158,21 @@
     "/assets/profile-Dwgir-Hs.png"
   ],
   "src/components/admin/AdminImageUpload.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AdminSectionEdit-RiWrGnXk.js"
+    "/assets/AdminSectionEdit-TiOf7gdm.js"
   ],
   "src/components/admin/AdminSectionRow.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AdminDashboard-DaYxN32Q.js"
-  ],
-  "src/components/admin/AdminSeoModal.vue": [
-    "/assets/AdminLayout-Di_sVJGn.js",
-    "/assets/AdminLayout-YnDE6nJe.css"
-  ],
-  "src/components/admin/AdminSeoModal.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AdminLayout-Di_sVJGn.js",
-    "/assets/AdminLayout-YnDE6nJe.css"
-  ],
-  "src/components/admin/AdminSeoModal.vue?vue&type=style&index=0&scoped=cffc4c40&lang.css": [
-    "/assets/AdminLayout-Di_sVJGn.js",
-    "/assets/AdminLayout-YnDE6nJe.css"
+    "/assets/AdminDashboard-B5c1etMR.js"
   ],
   "src/components/admin/AdminToast.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AdminLayout-Di_sVJGn.js",
-    "/assets/AdminLayout-YnDE6nJe.css"
+    "/assets/AdminLayout-Bk0g2BxW.js"
   ],
   "src/components/base/AAbout.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/HomeView-ByX1YJLl.js",
+    "/assets/HomeView-Ch2dfHJI.js",
     "/assets/HomeView-Buo-6RvD.css",
     "/assets/man2-CEyIhXB9.png"
   ],
   "src/components/base/AContact.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/HomeView-ByX1YJLl.js",
+    "/assets/HomeView-Ch2dfHJI.js",
     "/assets/HomeView-Buo-6RvD.css",
     "/assets/man2-CEyIhXB9.png"
   ],
@@ -193,7 +180,7 @@
     "/assets/profile-Dwgir-Hs.png"
   ],
   "src/components/base/AHero.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/HomeView-ByX1YJLl.js",
+    "/assets/HomeView-Ch2dfHJI.js",
     "/assets/HomeView-Buo-6RvD.css",
     "/assets/man2-CEyIhXB9.png"
   ],
@@ -207,37 +194,37 @@
     "/assets/profile-Dwgir-Hs.png"
   ],
   "src/components/base/AServices.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/HomeView-ByX1YJLl.js",
+    "/assets/HomeView-Ch2dfHJI.js",
     "/assets/HomeView-Buo-6RvD.css",
     "/assets/man2-CEyIhXB9.png"
   ],
   "src/components/base/ASkills.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/HomeView-ByX1YJLl.js",
+    "/assets/HomeView-Ch2dfHJI.js",
     "/assets/HomeView-Buo-6RvD.css",
     "/assets/man2-CEyIhXB9.png"
   ],
   "src/components/base/ATestimonials.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/HomeView-ByX1YJLl.js",
+    "/assets/HomeView-Ch2dfHJI.js",
     "/assets/HomeView-Buo-6RvD.css",
     "/assets/man2-CEyIhXB9.png"
   ],
   "src/components/base/AWorks.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/HomeView-ByX1YJLl.js",
+    "/assets/HomeView-Ch2dfHJI.js",
     "/assets/HomeView-Buo-6RvD.css",
     "/assets/man2-CEyIhXB9.png"
   ],
   "src/components/utils/AbAnimatedPlaceholder.vue": [
-    "/assets/HomeView-ByX1YJLl.js",
+    "/assets/HomeView-Ch2dfHJI.js",
     "/assets/HomeView-Buo-6RvD.css",
     "/assets/man2-CEyIhXB9.png"
   ],
   "src/components/utils/AbCard.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/HomeView-ByX1YJLl.js",
+    "/assets/HomeView-Ch2dfHJI.js",
     "/assets/HomeView-Buo-6RvD.css",
     "/assets/man2-CEyIhXB9.png"
   ],
   "src/components/utils/AbCardSkeleton.vue": [
-    "/assets/HomeView-ByX1YJLl.js",
+    "/assets/HomeView-Ch2dfHJI.js",
     "/assets/HomeView-Buo-6RvD.css",
     "/assets/man2-CEyIhXB9.png"
   ],
@@ -248,38 +235,38 @@
     "/assets/profile-Dwgir-Hs.png"
   ],
   "src/components/utils/AbTextModel.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/HomeView-ByX1YJLl.js",
+    "/assets/HomeView-Ch2dfHJI.js",
     "/assets/HomeView-Buo-6RvD.css",
     "/assets/man2-CEyIhXB9.png"
   ],
   "src/components/utils/AbToast.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/HomeView-ByX1YJLl.js",
+    "/assets/HomeView-Ch2dfHJI.js",
     "/assets/HomeView-Buo-6RvD.css",
     "/assets/man2-CEyIhXB9.png"
   ],
   "src/components/utils/AbTypewriter.vue": [
-    "/assets/HomeView-ByX1YJLl.js",
+    "/assets/HomeView-Ch2dfHJI.js",
     "/assets/HomeView-Buo-6RvD.css",
     "/assets/man2-CEyIhXB9.png"
   ],
   "src/components/utils/AbTypewriter.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/HomeView-ByX1YJLl.js",
+    "/assets/HomeView-Ch2dfHJI.js",
     "/assets/HomeView-Buo-6RvD.css",
     "/assets/man2-CEyIhXB9.png"
   ],
   "src/components/utils/AbTypewriter.vue?vue&type=style&index=0&scoped=936a393f&lang.scss": [
-    "/assets/HomeView-ByX1YJLl.js",
+    "/assets/HomeView-Ch2dfHJI.js",
     "/assets/HomeView-Buo-6RvD.css",
     "/assets/man2-CEyIhXB9.png"
   ],
   "src/composables/admin/useAdminToast.ts": [
-    "/assets/useAdminToast-DbhSyrei.js"
+    "/assets/useAdminToast-4PtBSlaR.js"
   ],
   "src/composables/admin/useImageUpload.ts": [
-    "/assets/AdminSectionEdit-RiWrGnXk.js"
+    "/assets/AdminSectionEdit-TiOf7gdm.js"
   ],
   "src/composables/useAnalytics.ts": [
-    "/assets/HomeView-ByX1YJLl.js",
+    "/assets/HomeView-Ch2dfHJI.js",
     "/assets/HomeView-Buo-6RvD.css",
     "/assets/man2-CEyIhXB9.png"
   ],
@@ -290,7 +277,7 @@
     "/assets/profile-Dwgir-Hs.png"
   ],
   "src/composables/useIntersectionObserver.ts": [
-    "/assets/HomeView-ByX1YJLl.js",
+    "/assets/HomeView-Ch2dfHJI.js",
     "/assets/HomeView-Buo-6RvD.css",
     "/assets/man2-CEyIhXB9.png"
   ],
@@ -307,72 +294,76 @@
     "/assets/profile-Dwgir-Hs.png"
   ],
   "src/services/auth.service.ts": [
-    "/assets/auth-stAX9_Zj.js"
+    "/assets/auth-ezPca2wV.js"
   ],
   "src/services/sections.service.ts": [
-    "/assets/sections-C6_ImomT.js"
+    "/assets/sections-CNmbTvWy.js"
   ],
   "src/services/seo.service.ts": [
     "/assets/profile-Dwgir-Hs.png"
   ],
   "src/stores/auth.ts": [
-    "/assets/auth-stAX9_Zj.js"
+    "/assets/auth-ezPca2wV.js"
   ],
   "src/stores/sections.ts": [
-    "/assets/sections-C6_ImomT.js"
+    "/assets/sections-CNmbTvWy.js"
   ],
   "src/stores/seo.ts": [
     "/assets/profile-Dwgir-Hs.png"
   ],
   "src/views/HomeView.vue": [
-    "/assets/HomeView-ByX1YJLl.js",
+    "/assets/HomeView-Ch2dfHJI.js",
     "/assets/HomeView-Buo-6RvD.css",
     "/assets/man2-CEyIhXB9.png"
   ],
   "src/views/HomeView.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/HomeView-ByX1YJLl.js",
+    "/assets/HomeView-Ch2dfHJI.js",
     "/assets/HomeView-Buo-6RvD.css",
     "/assets/man2-CEyIhXB9.png"
   ],
   "src/views/admin/AdminDashboard.vue": [
-    "/assets/AdminDashboard-DaYxN32Q.js"
+    "/assets/AdminDashboard-B5c1etMR.js"
   ],
   "src/views/admin/AdminDashboard.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AdminDashboard-DaYxN32Q.js"
+    "/assets/AdminDashboard-B5c1etMR.js"
   ],
   "src/views/admin/AdminLayout.vue": [
-    "/assets/AdminLayout-Di_sVJGn.js",
-    "/assets/AdminLayout-YnDE6nJe.css"
+    "/assets/AdminLayout-Bk0g2BxW.js"
   ],
   "src/views/admin/AdminLayout.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AdminLayout-Di_sVJGn.js",
-    "/assets/AdminLayout-YnDE6nJe.css"
+    "/assets/AdminLayout-Bk0g2BxW.js"
   ],
   "src/views/admin/AdminLogin.vue": [
-    "/assets/AdminLogin-BTx16sLH.js"
+    "/assets/AdminLogin-CMBjK7aO.js"
   ],
   "src/views/admin/AdminLogin.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AdminLogin-BTx16sLH.js"
+    "/assets/AdminLogin-CMBjK7aO.js"
   ],
   "src/views/admin/AdminSectionEdit.vue": [
-    "/assets/AdminSectionEdit-RiWrGnXk.js"
+    "/assets/AdminSectionEdit-TiOf7gdm.js"
   ],
   "src/views/admin/AdminSectionEdit.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AdminSectionEdit-RiWrGnXk.js"
+    "/assets/AdminSectionEdit-TiOf7gdm.js"
+  ],
+  "src/views/admin/AdminSeoSettings.vue": [
+    "/assets/AdminSeoSettings-BSkKZ1A-.js"
+  ],
+  "src/views/admin/AdminSeoSettings.vue?vue&type=script&setup=true&lang.ts": [
+    "/assets/AdminSeoSettings-BSkKZ1A-.js"
   ],
   "src/views/admin/editors/AdminAboutEditor.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AdminSectionEdit-RiWrGnXk.js"
+    "/assets/AdminSectionEdit-TiOf7gdm.js"
   ],
   "src/views/admin/editors/AdminContactEditor.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AdminSectionEdit-RiWrGnXk.js"
+    "/assets/AdminSectionEdit-TiOf7gdm.js"
   ],
   "src/views/admin/editors/AdminServicesEditor.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AdminSectionEdit-RiWrGnXk.js"
+    "/assets/AdminSectionEdit-TiOf7gdm.js"
   ],
   "src/views/admin/editors/AdminSkillsEditor.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AdminSectionEdit-RiWrGnXk.js"
+    "/assets/AdminSectionEdit-TiOf7gdm.js"
   ],
   "src/views/admin/editors/AdminWorksEditor.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AdminSectionEdit-RiWrGnXk.js"
+    "/assets/AdminSectionEdit-TiOf7gdm.js"
   ]
 }

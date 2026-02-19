@@ -1,0 +1,1 @@
+import{r as u}from"./app-D2seJ-VU.js";const e=u([]);let c=0;function d(){function o(s,t="info",i=4e3){const r=++c;e.value.push({id:r,message:s,kind:t}),setTimeout(()=>n(r),i)}function n(s){e.value=e.value.filter(t=>t.id!==s)}return{toasts:e,push:o,dismiss:n,success:s=>o(s,"success"),error:s=>o(s,"error",6e3),info:s=>o(s,"info")}}export{d as u};
