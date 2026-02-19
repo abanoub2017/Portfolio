@@ -26,6 +26,7 @@ declare module 'vue' {
     AdminSectionEdit: typeof import('./src/views/admin/AdminSectionEdit.vue')['default']
     AdminSectionRow: typeof import('./src/components/admin/AdminSectionRow.vue')['default']
     AdminSeoModal: typeof import('./src/components/admin/AdminSeoModal.vue')['default']
+    AdminSeoSettings: typeof import('./src/views/admin/AdminSeoSettings.vue')['default']
     AdminServicesEditor: typeof import('./src/views/admin/editors/AdminServicesEditor.vue')['default']
     AdminSkillsEditor: typeof import('./src/views/admin/editors/AdminSkillsEditor.vue')['default']
     AdminToast: typeof import('./src/components/admin/AdminToast.vue')['default']

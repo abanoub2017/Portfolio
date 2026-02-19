@@ -30,6 +30,11 @@ export const routes: RouteRecordRaw[] = [
         name: 'admin-section-edit',
         component: () => import('../views/admin/AdminSectionEdit.vue'),
       },
+      {
+        path: 'seo',
+        name: 'admin-seo',
+        component: () => import('../views/admin/AdminSeoSettings.vue'),
+      },
     ],
   },
 ]
