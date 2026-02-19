@@ -163,8 +163,10 @@ async function handleSave() {
 
                     <!-- OG Image — auto-derived from siteUrl -->
                     <div class="flex items-start gap-3 bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-3">
-                        <svg class="w-4 h-4 text-indigo-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20A10 10 0 0012 2z" />
+                        <svg class="w-4 h-4 text-indigo-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20A10 10 0 0012 2z" />
                         </svg>
                         <p class="text-xs text-gray-400 leading-relaxed">
                             The social preview image is automatically set to your profile photo
