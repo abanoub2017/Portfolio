@@ -34,9 +34,29 @@ Portfolio/
 │   ├── router/
 │   │   └── index.ts                 ← Single route: / → HomeView (lazy)
 │   │
-│   ├── views/
-│   │   └── HomeView.vue             ← Pure composition, no logic
-│   │                                  Assembles all A{Section} components
+   ├── firebase.ts                  ← initializeApp, getFirestore, getAuth exports
+   │
+   ├── types/
+   │   └── sections.ts              ← SectionType union + all content interfaces
+   │
+   ├── services/
+   │   ├── index.ts                 ← Barrel re-export
+   │   ├── auth.service.ts          ← signInWithEmail, signOut, onAuthChange
+   │   └── sections.service.ts      ← Firestore CRUD: fetch, subscribe, upsert, patch, reorder
+   │
+   ├── views/
+   │   ├── HomeView.vue             ← Pure composition, reads Firestore via sectionsStore
+   │   └── admin/
+   │       ├── AdminLogin.vue       ← Email/password login form
+   │       ├── AdminLayout.vue      ← Collapsible sidebar shell for all admin routes
+   │       ├── AdminDashboard.vue   ← Section list with drag-and-drop reorder
+   │       ├── AdminSectionEdit.vue ← Dynamic editor router (maps type → editor)
+   │       └── editors/
+   │           ├── AdminAboutEditor.vue
+   │           ├── AdminServicesEditor.vue
+   │           ├── AdminSkillsEditor.vue
+   │           ├── AdminWorksEditor.vue
+   │           └── AdminContactEditor.vue
 │   │
 │   ├── components/
 │   │   ├── base/                    ← A-prefix section components
@@ -135,11 +155,22 @@ Portfolio/
 ### Adding a Pinia store
 
 → `src/stores/{featureName}.ts`  
-→ Use `defineStore('{featureName}', () => { ... })`— composition API style
+→ Use `defineStore('{featureName}', () => { ... })` — composition API style
 
 ### Adding a composable
 
-→ `src/composables/use{FeatureName}.ts`
+→ Public: `src/composables/use{FeatureName}.ts`  
+→ Admin-only: `src/composables/admin/use{FeatureName}.ts`
+
+### Adding an admin editor
+
+→ `src/views/admin/editors/Admin{Type}Editor.vue`  
+→ Accept `sectionId: string` prop, read from `useSectionsStore().byType<T>()`, save via `store.saveContent()`  
+→ Register in `editorMap` inside `AdminSectionEdit.vue`
+
+### Adding an admin UI component
+
+→ `src/components/admin/Admin{Name}.vue`
 
 ### Adding project screenshots
 

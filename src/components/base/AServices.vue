@@ -35,51 +35,12 @@
 </template>
 
 <script setup lang="ts">
-interface Service {
-    icon: string
-    title: string
-    description: string
-    tags: string[]
-}
+import { computed } from 'vue'
+import { useSectionsStore } from '@/stores/sections'
+import type { ServicesContent } from '@/types/sections'
 
-const services: Service[] = [
-    {
-        icon: '🏗️',
-        title: 'Frontend Architecture',
-        description: 'Designing scalable component systems, feature-based folder structures, and module boundaries using Vue 3 or Angular — built to grow with your team and survive long-term.',
-        tags: ['Vue 3', 'Nuxt', 'Angular', 'TypeScript', 'Monorepo'],
-    },
-    {
-        icon: '🎨',
-        title: 'UI / UX Engineering',
-        description: 'Translating Figma designs into pixel-perfect, accessible, and responsive interfaces with smooth micro-animations and consistent design tokens across the whole product.',
-        tags: ['Figma', 'Tailwind CSS', 'SCSS', 'Animations', 'Design Systems'],
-    },
-    {
-        icon: '⚡',
-        title: 'Performance Optimization',
-        description: 'Auditing and improving Core Web Vitals — lazy loading, code splitting, tree-shaking, bundle analysis, image optimization, and HTTP caching for perfect Lighthouse scores.',
-        tags: ['Lighthouse', 'Vite', 'Lazy Loading', 'Bundle Analysis', 'Web Vitals'],
-    },
-    {
-        icon: '♿',
-        title: 'Accessibility (WCAG)',
-        description: 'Building inclusive products with semantic HTML, correct ARIA roles, keyboard navigation, focus management, and screen-reader testing to meet WCAG 2.1 AA standards.',
-        tags: ['ARIA', 'WCAG 2.1', 'Semantic HTML', 'Keyboard Nav', 'a11y'],
-    },
-    {
-        icon: '🧪',
-        title: 'Testing & Code Quality',
-        description: 'Setting up unit, component, and E2E test suites with Vitest and Cypress. ESLint, Prettier, and CI/CD pipelines to keep code clean and deployments safe.',
-        tags: ['Vitest', 'Cypress', 'ESLint', 'Prettier', 'CI/CD'],
-    },
-    {
-        icon: '🔗',
-        title: 'API Integration & State',
-        description: 'Seamless integration with REST and GraphQL APIs using fully typed data flows, error boundaries, optimistic updates, and efficient state management with Pinia or NgRx.',
-        tags: ['REST', 'GraphQL', 'Pinia', 'NgRx', 'TanStack Query'],
-    },
-]
+const store = useSectionsStore()
+const services = computed(() => store.byType<ServicesContent>('services').value?.items ?? [])
 </script>
 
 <style lang="scss" scoped></style>

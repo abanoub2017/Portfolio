@@ -4,6 +4,10 @@
 
 body {
   font-family: Nunito, sans-serif;
+}
+
+/* Portfolio layout needs top padding to clear the fixed nav */
+.portfolio-body {
   padding-top: 72px;
 }
 

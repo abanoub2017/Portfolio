@@ -34,23 +34,8 @@
 
         <!-- RIGHT: bio + contact -->
         <div class="flex flex-col gap-6">
-          <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
-            I'm a Senior Frontend Engineer with 5+ years of experience building fast, accessible, and scalable web
-            products. My work spans from pixel-perfect UIs to full frontend architecture — always with a focus on
-            performance, clean code, and user experience.
-          </p>
-          <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
-            I specialize in <strong class="text-indigo-600 dark:text-indigo-400">Vue 3 / Nuxt</strong>, TypeScript,
-            and Tailwind CSS, and I'm experienced with Agile workflows, cross-functional teams, and delivery at scale.
-            I care deeply about accessibility, core web vitals, and maintainability.
-          </p>
-          <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
-            I actively leverage <strong class="text-indigo-600 dark:text-indigo-400">AI tools</strong> (GitHub Copilot,
-            ChatGPT, Cursor) to
-            boost productivity and code quality. I also have solid knowledge of
-            <strong class="text-indigo-600 dark:text-indigo-400">CI/CD pipelines</strong> and
-            <strong class="text-indigo-600 dark:text-indigo-400">GitHub Actions</strong> — automating builds, tests,
-            and deployments to keep delivery fast and reliable.
+          <p v-for="(para, i) in bio" :key="i" class="text-gray-600 dark:text-gray-400 leading-relaxed">
+            {{ para }}
           </p>
 
           <!-- contact links -->
@@ -77,7 +62,7 @@
               </span>
               <span class="text-sm font-medium">{{ email }}</span>
             </a>
-            <a href="https://github.com/abanoub2017" target="_blank" rel="noopener noreferrer"
+            <a :href="github" target="_blank" rel="noopener noreferrer"
               class="group flex items-center gap-3 text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
               <span
                 class="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-slate-800 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0">
@@ -89,7 +74,7 @@
               </span>
               <span class="text-sm font-medium">github.com/abanoub2017</span>
             </a>
-            <a href="https://www.linkedin.com/in/abanoub-george-9235b1160/" target="_blank" rel="noopener noreferrer"
+            <a :href="linkedin" target="_blank" rel="noopener noreferrer"
               class="group flex items-center gap-3 text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
               <span
                 class="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-slate-800 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0">
@@ -119,18 +104,20 @@
 </template>
 
 <script setup lang="ts">
-// Split to avoid plain-text scraping by bots
-const phone: string = ['010', '156', '314', '74'].join('')
-const email: string = ['abanoubgeorge136', '@', 'gmail.com'].join('')
+import { computed } from 'vue'
+import { useSectionsStore } from '@/stores/sections'
+import type { AboutContent } from '@/types/sections'
 
-const stats = [
-  { value: '5+', label: 'Years of Experience' },
-  { value: '30+', label: 'Projects Delivered' },
-  { value: '10+', label: 'Happy Clients' },
-  { value: '100%', label: 'Commitment to Quality' },
-] as const
+const store = useSectionsStore()
+const data = computed(() => store.byType<AboutContent>('about').value)
 
-const stack = ['Vue 3', 'Nuxt 3', 'Nuxt 4', 'TypeScript', 'HTML5', 'CSS3', 'Bootstrap', 'Tailwind CSS', 'Pinia', 'Vite', 'Angular', 'REST APIs', 'Git', 'GitHub Actions', 'CI/CD', 'AI Tools']
+const stats = computed(() => data.value?.stats ?? [])
+const stack = computed(() => data.value?.stack ?? [])
+const phone = computed(() => data.value?.phone ?? '')
+const email = computed(() => data.value?.email ?? '')
+const github = computed(() => data.value?.github ?? 'https://github.com/abanoub2017')
+const linkedin = computed(() => data.value?.linkedin ?? 'https://www.linkedin.com/in/abanoub-george')
+const bio = computed(() => data.value?.bio ?? [])
 </script>
 
 <style lang="scss" scoped></style>

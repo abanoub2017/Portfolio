@@ -22,8 +22,8 @@
 
         <!-- cards -->
         <template v-else>
-          <AbCard v-for="work in workList" :key="work.link" :link="work.link" :img="getImageUrl(work.img)"
-            :title="work.content" :tag="work.tag" />
+          <AbCard v-for="work in workList" :key="work.id" :link="work.link" :img="work.imageBase64" :title="work.title"
+            :tag="work.tag" />
         </template>
       </div>
 
@@ -32,17 +32,18 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useIntersectionObserver } from '@/composables/useIntersectionObserver'
-import { workList } from '@/data/works'
+import { useSectionsStore } from '@/stores/sections'
+import type { WorksContent } from '@/types/sections'
 
 const { target, isIntersecting } = useIntersectionObserver({
   threshold: 0.1,
   rootMargin: '100px',
 })
 
-const getImageUrl = (name: string): string => {
-  return new URL(`../../assets/img/work/${name}`, import.meta.url).href
-}
+const store = useSectionsStore()
+const workList = computed(() => store.byType<WorksContent>('works').value?.items ?? [])
 </script>
 
 <style lang="scss" scoped></style>

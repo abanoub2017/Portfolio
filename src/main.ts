@@ -15,11 +15,12 @@ const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
-app.use(
-    createGtag({
-        tagId: import.meta.env.VITE_GA_MEASUREMENT_ID,
-    })
-)
+
+// Guard: createGtag returns null/undefined if tagId is missing (e.g. local dev without .env)
+const gtagPlugin = import.meta.env.VITE_GA_MEASUREMENT_ID
+    ? createGtag({ tagId: import.meta.env.VITE_GA_MEASUREMENT_ID })
+    : null
+if (gtagPlugin) app.use(gtagPlugin)
 useSmoothScroll(app)
 useMainHeadMeta(app)
 

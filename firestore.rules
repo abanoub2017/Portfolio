@@ -1,0 +1,46 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: only the single admin UID can write
+    function isAdmin() {
+      return request.auth != null
+          && request.auth.uid == 'x9GIOd2l0ndJSWn2T4uTY7K7eou1';
+    }
+
+    // ─── sections ────────────────────────────────────────────────────────────
+    // Public: anyone can read (powers the portfolio)
+    // Admin only: write
+    match /sections/{sectionId} {
+      allow read:  if true;
+      allow write: if isAdmin();
+
+      // Works project images stored as sub-collection to avoid 1MB doc limit
+      match /items/{itemId} {
+        allow read:  if true;
+        allow write: if isAdmin();
+      }
+    }
+
+    // ─── settings ─────────────────────────────────────────────────────────────
+    // Public: read (needed for section order + SEO meta)
+    // Admin only: write
+    match /settings/{doc} {
+      allow read:  if true;
+      allow write: if isAdmin();
+    }
+
+    // ─── blogPosts ────────────────────────────────────────────────────────────
+    // Public: read published posts only
+    // Admin: read + write all
+    match /blogPosts/{postId} {
+      allow read:  if resource.data.isPublished == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // ─── Deny everything else ─────────────────────────────────────────────────
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

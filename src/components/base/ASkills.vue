@@ -29,7 +29,7 @@
                         <div v-for="skill in category.skills" :key="skill.label" class="flex flex-col gap-1">
                             <div class="flex justify-between items-center">
                                 <span class="text-xs font-medium text-gray-600 dark:text-gray-300">{{ skill.label
-                                }}</span>
+                                    }}</span>
                                 <span class="text-xs text-gray-400 dark:text-gray-500">{{ skill.level }}%</span>
                             </div>
                             <div class="h-1.5 bg-gray-100 dark:bg-slate-700 rounded-full overflow-hidden">
@@ -58,65 +58,17 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useIntersectionObserver } from '@/composables/useIntersectionObserver'
+import { useSectionsStore } from '@/stores/sections'
+import type { SkillsContent } from '@/types/sections'
 
 const { target, isIntersecting } = useIntersectionObserver({ threshold: 0.15, rootMargin: '50px' })
 
-interface Skill { label: string; level: number }
-interface Category { title: string; icon: string; iconBg: string; barColor: string; skills: Skill[] }
-
-const categories: Category[] = [
-    {
-        title: 'Frontend Core',
-        icon: '🌐',
-        iconBg: 'bg-orange-50 dark:bg-orange-900/30',
-        barColor: 'bg-orange-400',
-        skills: [
-            { label: 'HTML5', level: 98 },
-            { label: 'CSS3 / SASS', level: 95 },
-            { label: 'JavaScript (ES6+)', level: 92 },
-            { label: 'TypeScript', level: 88 },
-        ],
-    },
-    {
-        title: 'Frameworks',
-        icon: '⚡',
-        iconBg: 'bg-indigo-50 dark:bg-indigo-900/30',
-        barColor: 'bg-indigo-500',
-        skills: [
-            { label: 'Vue 3', level: 95 },
-            { label: 'Nuxt 3 / 4', level: 90 },
-            { label: 'Angular', level: 80 },
-            { label: 'Bootstrap 4/5', level: 90 },
-        ],
-    },
-    {
-        title: 'Tooling & DevOps',
-        icon: '🔧',
-        iconBg: 'bg-teal-50 dark:bg-teal-900/30',
-        barColor: 'bg-teal-500',
-        skills: [
-            { label: 'Git / GitHub', level: 92 },
-            { label: 'GitHub Actions / CI-CD', level: 82 },
-            { label: 'Vite / Webpack', level: 85 },
-            { label: 'AI Tools (Copilot, GPT)', level: 90 },
-        ],
-    },
-    {
-        title: 'Design & UX',
-        icon: '🎨',
-        iconBg: 'bg-purple-50 dark:bg-purple-900/30',
-        barColor: 'bg-purple-500',
-        skills: [
-            { label: 'Tailwind CSS', level: 93 },
-            { label: 'Figma', level: 78 },
-            { label: 'Adobe XD', level: 72 },
-            { label: 'Responsive Design', level: 96 },
-        ],
-    },
-]
-
-const extras = ['jQuery', 'Pinia', 'Vuex', 'REST APIs', 'GraphQL', 'Jira', 'Trello', 'Agile / Scrum', 'Jest', 'Vitest']
+const store = useSectionsStore()
+const skillsData = computed(() => store.byType<SkillsContent>('skills').value)
+const categories = computed(() => skillsData.value?.categories ?? [])
+const extras = computed(() => skillsData.value?.extras ?? [])
 </script>
 
 <style lang="scss" scoped></style>
