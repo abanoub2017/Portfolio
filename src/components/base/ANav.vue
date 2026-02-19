@@ -1,10 +1,10 @@
 <template>
     <nav class="nav">
         <div class="nav__container">
-            <div class="flex items-center gap-1 px-1">
+            <RouterLink to="/" class="flex items-center gap-1 px-1">
                 <img class="w-8 rounded-lg" src="@/assets/img/profile.png" alt="logo" />
                 <span class="text-2xl font-bold text-indigo-900 dark:text-white">Banoub.</span>
-            </div>
+            </RouterLink>
             <ul class="nav__main-menu">
                 <li v-for="item in navItems" :key="item.id" class="nav__main-menu__link"
                     :class="{ 'nav__main-menu__link--active': isHomePage && activeSection === item.id }">
