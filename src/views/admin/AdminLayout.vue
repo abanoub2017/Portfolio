@@ -60,7 +60,7 @@ async function handleSignOut(): Promise<void> {
                 <router-link :to="{ name: 'admin-dashboard' }"
                     class="flex items-center py-2 rounded-xl text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-colors duration-150"
                     :class="sidebarOpen ? 'gap-3 px-3' : 'justify-center px-2'"
-                    active-class="!bg-indigo-600/20 !text-indigo-400">
+                    exact-active-class="!bg-indigo-600/20 !text-indigo-400">
                     <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                         stroke-width="1.8">
                         <path stroke-linecap="round" stroke-linejoin="round"
