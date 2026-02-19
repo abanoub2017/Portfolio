@@ -822,13 +822,13 @@ export function useSections() {
 **`.env` values to add:**
 
 ```
-VITE_FIREBASE_API_KEY=REDACTED_FIREBASE_API_KEY
-VITE_FIREBASE_AUTH_DOMAIN=portfolio-e2de2.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=portfolio-e2de2
-VITE_FIREBASE_STORAGE_BUCKET=portfolio-e2de2.firebasestorage.app
-VITE_FIREBASE_MESSAGING_SENDER_ID=528879312235
-VITE_FIREBASE_APP_ID=REDACTED_FIREBASE_APP_ID
-VITE_FIREBASE_MEASUREMENT_ID=G-0JZ047YX05
+VITE_FIREBASE_API_KEY=your-firebase-api-key
+VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your-project-id
+VITE_FIREBASE_STORAGE_BUCKET=your-project.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
+VITE_FIREBASE_APP_ID=your-app-id
+VITE_FIREBASE_MEASUREMENT_ID=your-measurement-id
 ```
 
 > ⚠️ Note: `measurementId` in Firebase config is **different** from your GA4 `VITE_GA_MEASUREMENT_ID`. They are separate tracking IDs — keep both.
