@@ -13,11 +13,11 @@ export function useImageUpload() {
 
         try {
             const compressed = await imageCompression(file, {
-                maxSizeMB: 0.08,          // 80 KB hard cap before Base64 overhead
-                maxWidthOrHeight: 800,
+                maxSizeMB: 0.35,          // ~350 KB → ~465 KB base64; well within Firestore 1 MB doc limit
+                maxWidthOrHeight: 1400,   // wide enough for featured 21:9 hero without upscaling
                 useWebWorker: true,
                 fileType: 'image/webp',   // ~30% smaller than jpeg at same quality
-                initialQuality: 0.8,
+                initialQuality: 0.85,
             })
 
             sizeKB.value = Math.round(compressed.size / 1024)

@@ -24,7 +24,7 @@ function navigate() {
         @click="navigate">
 
         <!-- Cover image -->
-        <div class="relative overflow-hidden aspect-video">
+        <div class="card-cover relative overflow-hidden h-48 w-full">
             <img v-if="post.coverImageBase64" :src="post.coverImageBase64" :alt="post.title"
                 class="w-full h-full object-cover object-top transition-all duration-500 group-hover:scale-105"
                 :class="imageLoaded ? 'opacity-100' : 'opacity-0'" loading="lazy" @load="imageLoaded = true"
