@@ -72,14 +72,14 @@ async function copyCode() {
 </script>
 
 <template>
-    <div class="my-6 rounded-xl overflow-hidden border border-slate-700 bg-[#0d1117]">
+    <div class="my-6 rounded-xl overflow-hidden border border-[#1d3b53] bg-[#011627]">
         <!-- Header bar: language label + copy button -->
-        <div class="flex items-center justify-between px-4 py-2 bg-[#161b22] border-b border-slate-700">
-            <span class="text-[11px] font-semibold tracking-widest uppercase text-slate-400 select-none">
+        <div class="flex items-center justify-between px-4 py-2 bg-[#01111d] border-b border-[#1d3b53]">
+            <span class="text-[11px] font-semibold tracking-widest uppercase text-[#5f7e97] select-none">
                 {{ language ?? 'code' }}
             </span>
             <button @click="copyCode"
-                class="flex items-center gap-1.5 text-[11px] text-slate-400 hover:text-white transition-colors"
+                class="flex items-center gap-1.5 text-[11px] text-[#5f7e97] hover:text-[#d6deeb] transition-colors"
                 :aria-label="copied ? 'Copied!' : 'Copy code'">
                 <!-- Checkmark when copied -->
                 <svg v-if="copied" class="w-3.5 h-3.5 text-green-400" fill="none" stroke="currentColor"
@@ -98,88 +98,99 @@ async function copyCode() {
 
         <!-- Code body -->
         <pre
-            class="overflow-x-auto p-5 text-sm font-mono leading-relaxed m-0 bg-[#0d1117] text-[#cdd9e5]"><code class="hljs" v-html="highlightedHtml" /></pre>
+            class="overflow-x-auto p-5 text-sm font-mono leading-relaxed m-0 bg-[#011627] text-[#d6deeb]"><code class="hljs" v-html="highlightedHtml" /></pre>
     </div>
 </template>
 
 <style>
-/* ── GitHub Dark syntax theme ─────────────────────────────────────────────── */
+/* ── Night Owl syntax theme (Sarah Drasner) ───────────────────────────────── */
 :deep(.hljs-comment),
 :deep(.hljs-quote) {
-    color: #8b949e;
+    color: #637777;
     font-style: italic;
 }
 
 :deep(.hljs-keyword),
 :deep(.hljs-selector-tag),
-:deep(.hljs-literal) {
-    color: #ff7b72;
+:deep(.hljs-literal),
+:deep(.hljs-operator) {
+    color: #c792ea;
+    font-style: italic;
 }
 
 :deep(.hljs-string),
-:deep(.hljs-attr),
 :deep(.hljs-addition) {
-    color: #a5d6ff;
+    color: #ecc48d;
+}
+
+:deep(.hljs-attr) {
+    color: #7fdbca;
 }
 
 :deep(.hljs-variable),
-:deep(.hljs-template-variable),
-:deep(.hljs-selector-attr) {
-    color: #ffa657;
+:deep(.hljs-template-variable) {
+    color: #addb67;
 }
 
-:deep(.hljs-number),
+:deep(.hljs-number) {
+    color: #f78c6c;
+}
+
 :deep(.hljs-meta) {
-    color: #79c0ff;
+    color: #82aaff;
 }
 
 :deep(.hljs-type),
 :deep(.hljs-class .hljs-title),
 :deep(.hljs-title) {
-    color: #f0883e;
+    color: #ffcb8b;
 }
 
 :deep(.hljs-function),
 :deep(.hljs-title.hljs-function__) {
-    color: #d2a8ff;
+    color: #82aaff;
 }
 
 :deep(.hljs-built_in),
 :deep(.hljs-builtin-name) {
-    color: #ffa657;
+    color: #addb67;
 }
 
 :deep(.hljs-params) {
-    color: #cdd9e5;
+    color: #d7dbe0;
+    font-style: italic;
 }
 
 :deep(.hljs-deletion) {
-    color: #ffa198;
-    background: #67060c;
+    color: #ef5350;
+    background: #1d1f2b;
 }
 
 :deep(.hljs-symbol),
 :deep(.hljs-bullet),
 :deep(.hljs-link) {
-    color: #a5d6ff;
+    color: #82aaff;
 }
 
 :deep(.hljs-regexp) {
-    color: #7ee787;
+    color: #5ca7e4;
 }
 
-:deep(.hljs-tag),
+:deep(.hljs-tag) {
+    color: #7fdbca;
+}
+
 :deep(.hljs-selector-id),
 :deep(.hljs-selector-class) {
-    color: #7ee787;
+    color: #f78c6c;
 }
 
 :deep(.hljs-attribute) {
-    color: #79c0ff;
+    color: #7fdbca;
 }
 
-:deep(.hljs-operator),
+:deep(.hljs-selector-attr),
 :deep(.hljs-punctuation) {
-    color: #cdd9e5;
+    color: #d6deeb;
 }
 </style>

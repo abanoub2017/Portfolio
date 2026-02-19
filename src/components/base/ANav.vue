@@ -7,8 +7,10 @@
             </div>
             <ul class="nav__main-menu">
                 <li v-for="item in navItems" :key="item.id" class="nav__main-menu__link"
-                    :class="{ 'nav__main-menu__link--active': activeSection === item.id }">
-                    <a v-smooth-scroll :href="`#${item.id}`" @click="activeSection = item.id">{{ item.label }}</a>
+                    :class="{ 'nav__main-menu__link--active': isHomePage && activeSection === item.id }">
+                    <a v-if="isHomePage" v-smooth-scroll :href="`#${item.id}`" @click="activeSection = item.id">{{
+                        item.label }}</a>
+                    <a v-else href="javascript:void(0)" @click="onNavClick(item.id)">{{ item.label }}</a>
                 </li>
                 <li class="nav__main-menu__link"
                     :class="{ 'nav__main-menu__link--active': route.path.startsWith('/blog') }">
@@ -26,8 +28,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 interface NavItem {
     id: string
@@ -46,6 +48,12 @@ const navItems: NavItem[] = [
 
 const activeSection = ref<string>('home')
 const route = useRoute()
+const router = useRouter()
+const isHomePage = computed(() => route.path === '/')
+
+function onNavClick(id: string) {
+    router.push({ path: '/', hash: `#${id}` })
+}
 let observer: IntersectionObserver | null = null
 
 function setupObserver(): void {
