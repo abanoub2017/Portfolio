@@ -1,12 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { useSeoStore } from '@/stores/seo'
 import AdminToast from '@/components/admin/AdminToast.vue'
+import AdminSeoModal from '@/components/admin/AdminSeoModal.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
+const seoStore = useSeoStore()
 const sidebarOpen = ref(true)
+const showSeoModal = ref(false)
+
+onMounted(() => seoStore.load())
 
 async function handleSignOut(): Promise<void> {
     await authStore.signOut()
@@ -35,6 +41,7 @@ async function handleSignOut(): Promise<void> {
 
             <!-- Nav links -->
             <nav class="flex-1 py-4 px-2 space-y-1 overflow-y-auto">
+                <!-- Sections -->
                 <router-link :to="{ name: 'admin-dashboard' }"
                     class="flex items-center py-2 rounded-xl text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-colors duration-150"
                     :class="sidebarOpen ? 'gap-3 px-3' : 'justify-center px-2'"
@@ -46,6 +53,18 @@ async function handleSignOut(): Promise<void> {
                     </svg>
                     <span v-if="sidebarOpen">Sections</span>
                 </router-link>
+
+                <!-- SEO Settings -->
+                <button @click="showSeoModal = true"
+                    class="w-full flex items-center py-2 rounded-xl text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-colors duration-150"
+                    :class="sidebarOpen ? 'gap-3 px-3' : 'justify-center px-2'">
+                    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                        stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 21l-4.35-4.35M17 11A6 6 0 111 11a6 6 0 0116 0z" />
+                    </svg>
+                    <span v-if="sidebarOpen">SEO Settings</span>
+                </button>
             </nav>
 
             <!-- Footer: toggle + sign out -->
@@ -112,4 +131,7 @@ async function handleSignOut(): Promise<void> {
 
     <!-- Global toast notifications -->
     <AdminToast />
+
+    <!-- SEO Settings modal -->
+    <AdminSeoModal :open="showSeoModal" @close="showSeoModal = false" />
 </template>

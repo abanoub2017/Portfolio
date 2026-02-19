@@ -3,13 +3,12 @@ import { RouterView, useRoute } from 'vue-router'
 import { ref, watch, onMounted, computed } from 'vue'
 import { useGlobalHeadMeta } from './composables/useHead/useGlobalHeadMeta'
 import { useGlobalLoading } from './composables/useGlobalLoading'
+import { useSeoStore } from './stores/seo'
 
-useGlobalHeadMeta(
-  'Abanoub George — Front-End Developer & Vue.js Specialist',
-  'Portfolio of Abanoub George, a Front-End Developer with 4+ years of experience building fast, responsive web apps with Vue.js, Nuxt.js and modern CSS.',
-  'Abanoub George, portfolio, Front-End Developer, Vue.js, Nuxt.js, HTML5, CSS3, SCSS, JavaScript, TypeScript'
-)
+// Registers reactive head/SEO tags — updates automatically when the store loads
+useGlobalHeadMeta()
 
+const seoStore = useSeoStore()
 const route = useRoute()
 const isAdminRoute = computed(() => route.path.startsWith('/admin'))
 
@@ -18,6 +17,9 @@ const isLoading = ref<boolean>(true)
 const minTimeElapsed = ref<boolean>(false)
 
 onMounted(() => {
+  // Load SEO config from Firestore (non-blocking, head tags update reactively)
+  seoStore.load()
+
   setTimeout(() => {
     minTimeElapsed.value = true
     if (isReady.value) isLoading.value = false
