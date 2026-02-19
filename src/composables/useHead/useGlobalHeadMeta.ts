@@ -1,10 +1,10 @@
-import { useHead, useServerHead, useServerSeoMeta, useSeoMeta } from "unhead";
+import { useHead, useSeoMeta } from "@unhead/vue";
 
 const SITE_URL = 'https://abanoubgeorge.net'
 const OG_IMAGE = `${SITE_URL}/img/profile.png`
 
 export function useGlobalHeadMeta(title: string, description: string, keywords: string) {
-  const globalHead = useHead({
+  useHead({
     title: title,
     script: [
       {
@@ -40,16 +40,8 @@ export function useGlobalHeadMeta(title: string, description: string, keywords: 
       { property: 'og:image', content: OG_IMAGE },
     ],
   });
-  const globalServerHead = useServerHead({
-    title: title,
-    meta: [
-      { name: 'description', content: description },
-      { name: 'keywords', content: keywords },
-      { name: 'author', content: 'Abanoub George' },
-      { property: 'og:image', content: OG_IMAGE },
-    ],
-  });
-  const globalSeoHead = useSeoMeta({
+
+  useSeoMeta({
     title: title,
     description: description,
     ogDescription: description,
@@ -61,19 +53,4 @@ export function useGlobalHeadMeta(title: string, description: string, keywords: 
     twitterDescription: description,
     twitterImage: OG_IMAGE,
   });
-
-  const globalServerSeoHead = useServerSeoMeta({
-    title: title,
-    description: description,
-    ogDescription: description,
-    ogTitle: title,
-    ogImage: OG_IMAGE,
-  });
-
-  return {
-    globalHead,
-    globalServerHead,
-    globalSeoHead,
-    globalServerSeoHead,
-  };
 }

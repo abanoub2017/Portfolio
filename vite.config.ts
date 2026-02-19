@@ -24,6 +24,17 @@ export default defineConfig({
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
     }),
   ],
+
+  // ─── SSG (Static Site Generation) ───────────────────────────────────────
+  ssgOptions: {
+    script: 'async',
+    formatting: 'minify',
+    // Only prerender public pages; admin stays as a client-side SPA
+    includedRoutes(paths) {
+      return paths.filter((p) => !p.startsWith('/admin'))
+    },
+  },
+
   css: {
     preprocessorOptions: {
       scss: {

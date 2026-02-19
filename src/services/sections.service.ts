@@ -21,11 +21,11 @@ import {
     type DocumentData,
     type QuerySnapshot,
 } from 'firebase/firestore'
-import { db } from '@/firebase'
+import { getDb } from '@/firebase'
 import type { Section, SectionContent, SectionType } from '@/types/sections'
 
 const COLLECTION = 'sections'
-const col = () => collection(db, COLLECTION)
+const col = () => collection(getDb(), COLLECTION)
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 

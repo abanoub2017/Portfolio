@@ -12,7 +12,7 @@ import {
     type User,
     type Unsubscribe,
 } from 'firebase/auth'
-import { auth } from '@/firebase'
+import { getFirebaseAuth } from '@/firebase'
 
 /**
  * Sign in with email and password.
@@ -22,7 +22,7 @@ export async function signInWithEmail(
     email: string,
     password: string,
 ): Promise<User> {
-    const { user } = await signInWithEmailAndPassword(auth, email, password)
+    const { user } = await signInWithEmailAndPassword(getFirebaseAuth(), email, password)
     return user
 }
 
@@ -30,7 +30,7 @@ export async function signInWithEmail(
  * Sign out the current user.
  */
 export async function signOutUser(): Promise<void> {
-    await signOut(auth)
+    await signOut(getFirebaseAuth())
 }
 
 /**
@@ -41,5 +41,5 @@ export async function signOutUser(): Promise<void> {
 export function onAuthChange(
     callback: (user: User | null) => void,
 ): Unsubscribe {
-    return onAuthStateChanged(auth, callback)
+    return onAuthStateChanged(getFirebaseAuth(), callback)
 }

@@ -1,7 +1,7 @@
-import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
+import type { RouteRecordRaw, Router } from 'vue-router'
 import { watch } from 'vue'
 
-const routes: RouteRecordRaw[] = [
+export const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home',
@@ -34,43 +34,40 @@ const routes: RouteRecordRaw[] = [
   },
 ]
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes,
-})
+/**
+ * Install the auth navigation guard.
+ * Called from main.ts after ViteSSG creates the router instance.
+ * Only runs on the client — SSG build skips this entirely.
+ */
+export function installRouterGuards(router: Router) {
+  router.beforeEach(async (to) => {
+    const { useAuthStore } = await import('../stores/auth')
+    const authStore = useAuthStore()
 
-// ─── Navigation Guard ────────────────────────────────────────────────────────
-// Lazily import to avoid circular dependency (store uses router, router uses store)
-router.beforeEach(async (to) => {
-  const { useAuthStore } = await import('../stores/auth')
-  const authStore = useAuthStore()
+    // Wait for Firebase to restore the session before making any auth decision.
+    if (!authStore.isReady) {
+      await new Promise<void>((resolve) => {
+        const stop = watch(
+          () => authStore.isReady,
+          (ready: boolean) => {
+            if (ready) {
+              stop()
+              resolve()
+            }
+          },
+          { immediate: true }
+        )
+      })
+    }
 
-  // Wait for Firebase to restore the session before making any auth decision.
-  // Without this, a page refresh always redirects to /admin/login incorrectly.
-  if (!authStore.isReady) {
-    await new Promise<void>((resolve) => {
-      const stop = watch(
-        () => authStore.isReady,
-        (ready) => {
-          if (ready) {
-            stop()
-            resolve()
-          }
-        },
-        { immediate: true }
-      )
-    })
-  }
+    // Protect /admin/* — redirect to login if not authenticated
+    if (to.meta.requiresAuth && !authStore.isAdmin) {
+      return { name: 'admin-login' }
+    }
 
-  // Protect /admin/* — redirect to login if not authenticated
-  if (to.meta.requiresAuth && !authStore.isAdmin) {
-    return { name: 'admin-login' }
-  }
-
-  // Redirect already-logged-in admin away from the login page
-  if (to.meta.requiresGuest && authStore.isAdmin) {
-    return { name: 'admin-dashboard' }
-  }
-})
-
-export default router
+    // Redirect already-logged-in admin away from the login page
+    if (to.meta.requiresGuest && authStore.isAdmin) {
+      return { name: 'admin-dashboard' }
+    }
+  })
+}

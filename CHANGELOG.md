@@ -71,3 +71,19 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Form reset on save: Firestore snapshot after write was triggering watch and wiping the user's edits — fixed with `{ once: true }` watcher
 - `ReferenceError: Cannot access 'stopSourceWatch' before initialization` — temporal dead zone bug from calling `stopSourceWatch()` inside `{ immediate: true }` callback; replaced with Vue 3.4 `{ once: true }` option
 - White body padding on admin routes — `padding-top: 72px` scoped to `.portfolio-body` class, not applied to admin layout
+
+### Added — SSG (Static Site Generation) for SEO
+
+- Installed `vite-ssg` v28 — pre-renders public routes to static HTML at build time
+- `@unhead/vue` v2 replaces `unhead` v1 — `useHead()` and `useSeoMeta()` render into HTML during SSG
+- `src/main.ts` — rewritten to use `ViteSSG()` entry point; Pinia shared, gtag/smooth-scroll/auth guards are client-only
+- `src/router/index.ts` — exports raw `routes` array + `installRouterGuards()` (ViteSSG creates its own router)
+- `src/firebase.ts` — lazy Proxy singletons (`db`, `auth`, `app`) defer Firebase init to first client-side access (SSR-safe)
+- `src/composables/useHead/useGlobalHeadMeta.ts` — migrated from `unhead` to `@unhead/vue`; removed `useServerHead`/`useServerSeoMeta`
+- `vite.config.ts` — added `ssgOptions.includedRoutes` to exclude `/admin/*` from prerendering
+- `package.json` — build script changed to `vite-ssg build`
+- SSR no-op directive registered for `v-smooth-scroll` (prevents server-renderer crash)
+- `dist/index.html` now contains full pre-rendered HTML (30 KiB): all sections, OG tags, Twitter Cards, JSON-LD
+- Admin routes remain client-side SPA; `404.html` fallback still handles GitHub Pages routing
+- Removed: `unhead` v1, `@unhead/addons` (replaced by `@unhead/vue` v2)
+- See `docs/Architecture/SSG.md` for full guide and future-feature checklist

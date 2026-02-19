@@ -1,27 +1,45 @@
-import { createApp } from 'vue'
+import { ViteSSG } from 'vite-ssg'
 import { createPinia } from 'pinia'
 import { createGtag } from 'vue-gtag'
 
 import App from './App.vue'
-import router from './router'
-
-import { useSmoothScroll } from './composables/useSmoothScroll'
-import { useMainHeadMeta } from './composables/useHead/useMainHeadMeta'
+import { routes, installRouterGuards } from './router'
 
 import './assets/scss/main.scss'
 import './assets/css/tailwind.css'
 
-const app = createApp(App)
+export const createApp = ViteSSG(
+    App,
+    // vue-router options — ViteSSG creates the router internally
+    {
+        routes,
+        base: import.meta.env.BASE_URL,
+    },
+    // Setup callback — runs for both SSG build and client hydration
+    ({ app, router, isClient }) => {
+        app.use(createPinia())
 
-app.use(createPinia())
-app.use(router)
+        // Register a no-op smooth-scroll directive for SSR
+        // (the real one will be installed below on the client)
+        if (!isClient) {
+            app.directive('smooth-scroll', {})
+        }
 
-// Guard: createGtag returns null/undefined if tagId is missing (e.g. local dev without .env)
-const gtagPlugin = import.meta.env.VITE_GA_MEASUREMENT_ID
-    ? createGtag({ tagId: import.meta.env.VITE_GA_MEASUREMENT_ID })
-    : null
-if (gtagPlugin) app.use(gtagPlugin)
-useSmoothScroll(app)
-useMainHeadMeta(app)
+        // ─── Client-only plugins ────────────────────────────────────────────────
+        if (isClient) {
+            // Vue-gtag (Google Analytics)
+            const gtagPlugin = import.meta.env.VITE_GA_MEASUREMENT_ID
+                ? createGtag({ tagId: import.meta.env.VITE_GA_MEASUREMENT_ID })
+                : null
+            if (gtagPlugin) app.use(gtagPlugin)
 
-app.mount('#app')
+            // Smooth scroll plugin (needs DOM)
+            import('./composables/useSmoothScroll').then(({ useSmoothScroll }) => {
+                useSmoothScroll(app)
+            })
+
+            // Auth navigation guards (Firebase is client-only)
+            installRouterGuards(router)
+        }
+    },
+)
