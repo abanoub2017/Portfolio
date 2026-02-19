@@ -48,6 +48,8 @@ const descColor = computed(() => ({
 
 async function handleSave() {
     saving.value = true
+    // Derive ogImage automatically from the canonical site URL
+    form.value.ogImage = `${form.value.siteUrl.replace(/\/$/, '')}/img/profile.png`
     try {
         await seoStore.save(form.value)
         saved.value = true
@@ -96,8 +98,7 @@ async function handleSave() {
                     <h3 class="text-white font-semibold">Page Title</h3>
                     <p class="text-gray-500 text-xs">Appears in the browser tab and Google results. Aim for 50–60
                         characters.</p>
-                    <input v-model="form.title" type="text"
-                        placeholder="Your Name — Job Title & Speciality"
+                    <input v-model="form.title" type="text" placeholder="Your Name — Job Title & Speciality"
                         class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500 transition-colors" />
                 </div>
 
@@ -107,21 +108,20 @@ async function handleSave() {
                         <h3 class="text-white font-semibold">Meta Description</h3>
                         <span class="text-xs font-mono" :class="descColor">{{ descLength }} / 160</span>
                     </div>
-                    <p class="text-gray-500 text-xs">Shown beneath your title in search results. Aim for 50–160 characters.</p>
+                    <p class="text-gray-500 text-xs">Shown beneath your title in search results. Aim for 50–160
+                        characters.</p>
                     <textarea v-model="form.description" rows="3"
                         placeholder="Short summary of what you do and who you help..."
                         class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500 transition-colors resize-none" />
                     <!-- Progress bar -->
                     <div class="flex items-center gap-3">
                         <div class="flex-1 h-1.5 bg-gray-800 rounded-full overflow-hidden">
-                            <div class="h-full rounded-full transition-all duration-300"
-                                :class="{
-                                    'bg-gray-600': descStatus === 'empty',
-                                    'bg-yellow-400': descStatus === 'short',
-                                    'bg-green-400': descStatus === 'good',
-                                    'bg-red-400': descStatus === 'long',
-                                }"
-                                :style="{ width: `${Math.min((descLength / 160) * 100, 100)}%` }" />
+                            <div class="h-full rounded-full transition-all duration-300" :class="{
+                                'bg-gray-600': descStatus === 'empty',
+                                'bg-yellow-400': descStatus === 'short',
+                                'bg-green-400': descStatus === 'good',
+                                'bg-red-400': descStatus === 'long',
+                            }" :style="{ width: `${Math.min((descLength / 160) * 100, 100)}%` }" />
                         </div>
                         <p class="text-xs shrink-0" :class="descColor">{{ descHint }}</p>
                     </div>
@@ -132,8 +132,7 @@ async function handleSave() {
                     <h3 class="text-white font-semibold">Keywords</h3>
                     <p class="text-gray-500 text-xs">Comma-separated. Used in <code
                             class="bg-gray-800 px-1 rounded text-gray-400">JSON-LD</code> structured data.</p>
-                    <input v-model="form.keywords" type="text"
-                        placeholder="Vue.js, TypeScript, Frontend Developer, ..."
+                    <input v-model="form.keywords" type="text" placeholder="Vue.js, TypeScript, Frontend Developer, ..."
                         class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500 transition-colors" />
                 </div>
 
@@ -142,8 +141,7 @@ async function handleSave() {
                     <h3 class="text-white font-semibold">Author Name</h3>
                     <p class="text-gray-500 text-xs">Used in the <code
                             class="bg-gray-800 px-1 rounded text-gray-400">author</code> meta tag and JSON-LD.</p>
-                    <input v-model="form.authorName" type="text"
-                        placeholder="Your Full Name"
+                    <input v-model="form.authorName" type="text" placeholder="Your Full Name"
                         class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500 transition-colors" />
                 </div>
 
@@ -158,26 +156,21 @@ async function handleSave() {
                     <!-- Site URL -->
                     <div class="flex flex-col gap-2">
                         <label class="text-xs font-medium text-gray-400 uppercase tracking-wide">Site URL</label>
-                        <input v-model="form.siteUrl" type="url"
-                            placeholder="https://yoursite.com"
+                        <input v-model="form.siteUrl" type="url" placeholder="https://yoursite.com"
                             class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500 transition-colors" />
                         <p class="text-xs text-gray-600">Canonical URL — no trailing slash.</p>
                     </div>
 
-                    <!-- OG Image -->
-                    <div class="flex flex-col gap-2">
-                        <label class="text-xs font-medium text-gray-400 uppercase tracking-wide">Social Preview
-                            Image URL</label>
-                        <input v-model="form.ogImage" type="url"
-                            placeholder="https://yoursite.com/img/og.png"
-                            class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500 transition-colors" />
-                        <p class="text-xs text-gray-600">Ideal size: 1200 × 630 px.</p>
-                        <!-- Image preview -->
-                        <div v-if="form.ogImage"
-                            class="rounded-xl overflow-hidden border border-gray-700 bg-gray-800 aspect-video flex items-center justify-center">
-                            <img :src="form.ogImage" alt="OG preview" class="w-full h-full object-cover"
-                                @error="($event.target as HTMLImageElement).style.display = 'none'" />
-                        </div>
+                    <!-- OG Image — auto-derived from siteUrl -->
+                    <div class="flex items-start gap-3 bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-3">
+                        <svg class="w-4 h-4 text-indigo-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20A10 10 0 0012 2z" />
+                        </svg>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            The social preview image is automatically set to your profile photo
+                            (<code class="bg-gray-700 px-1 rounded text-gray-300">/img/profile.png</code>).
+                            To change it, replace that file in your project.
+                        </p>
                     </div>
                 </div>
 
