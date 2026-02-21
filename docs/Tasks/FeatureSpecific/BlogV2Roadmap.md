@@ -94,7 +94,7 @@ Category filter is done. Tags need the same treatment.
 
 ### 4. URL Query Params for Filters
 
-**Status:** ☐ Not started  
+**Status:** ✅ Done  
 **File:** `src/views/BlogListView.vue`
 
 Makes filters shareable and survive page refresh.

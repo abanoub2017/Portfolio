@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, computed, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useHead } from '@unhead/vue'
 import { useBlogStore } from '@/stores/blog'
 import { useSeoStore } from '@/stores/seo'
@@ -8,13 +9,13 @@ import AbBlogCardSkeleton from '@/components/blog/AbBlogCardSkeleton.vue'
 
 const blogStore = useBlogStore()
 const seoStore = useSeoStore()
+const route = useRoute()
+const router = useRouter()
 
-onMounted(() => blogStore.loadPublished())
-
-// ─── Search & filter state ────────────────────────────────────────────────────
-const searchQuery = ref('')
-const activeCategory = ref<string | null>(null)
-const activeTag = ref<string | null>(null)
+// Seed filter state from URL query params on first render
+const searchQuery = ref((route.query['q'] as string) ?? '')
+const activeCategory = ref<string | null>((route.query['category'] as string) ?? null)
+const activeTag = ref<string | null>((route.query['tag'] as string) ?? null)
 
 // All unique categories from published posts
 const categories = computed<string[]>(() => {
@@ -82,9 +83,27 @@ watch([searchQuery, activeCategory, activeTag], () => {
     visibleCount.value = PAGE_SIZE
 })
 
+// ─── Sync filters ⇔ URL query params ────────────────────────────────────────
+// Debounce search input so typing doesn’t hammer the history stack
+let _searchTimer: ReturnType<typeof setTimeout> | null = null
+watch(searchQuery, (val) => {
+    if (_searchTimer) clearTimeout(_searchTimer)
+    _searchTimer = setTimeout(() => syncQuery(), 300)
+})
+watch([activeCategory, activeTag], () => syncQuery())
+
+function syncQuery() {
+    const q: Record<string, string> = {}
+    if (searchQuery.value.trim()) q['q'] = searchQuery.value.trim()
+    if (activeCategory.value) q['category'] = activeCategory.value
+    if (activeTag.value) q['tag'] = activeTag.value
+    router.replace({ query: q })
+}
+
 let _observer: IntersectionObserver | null = null
 
 onMounted(() => {
+    blogStore.loadPublished()
     _observer = new IntersectionObserver(
         (entries) => {
             if (entries[0]?.isIntersecting && hasMore.value) {
