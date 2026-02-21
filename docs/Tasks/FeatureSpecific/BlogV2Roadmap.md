@@ -134,7 +134,7 @@ Makes filters shareable and survive page refresh.
 
 ### 6. SSG Slug Pre-rendering (Phase 7)
 
-**Status:** ☐ Not started  
+**Status:** ✅ Done  
 **File:** `vite.config.js`  
 **Spec ref:** `Blog.md §8 Phase 7`
 
