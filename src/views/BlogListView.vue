@@ -314,10 +314,9 @@ useHead({
                 <!-- ── Infinite scroll sentinel ── -->
                 <div ref="sentinelEl" class="mt-10 flex justify-center" aria-hidden="true">
                     <!-- Spinner shown while more posts remain -->
-                    <transition
-                        enter-active-class="transition-opacity duration-300"
-                        leave-active-class="transition-opacity duration-200"
-                        enter-from-class="opacity-0" leave-to-class="opacity-0">
+                    <transition enter-active-class="transition-opacity duration-300"
+                        leave-active-class="transition-opacity duration-200" enter-from-class="opacity-0"
+                        leave-to-class="opacity-0">
                         <div v-if="hasMore" class="flex items-center gap-2 text-gray-400 dark:text-slate-500 text-sm">
                             <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
