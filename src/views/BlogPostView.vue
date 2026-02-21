@@ -61,9 +61,14 @@ const pageDescription = computed(() =>
     meta.value ? meta.value.metaDescription || meta.value.excerpt : seoStore.config.description,
 )
 
-const ogImage = computed(() =>
-    meta.value?.coverImageBase64 || seoStore.config.ogImage,
-)
+const ogImage = computed(() => {
+    const cover = meta.value?.coverImageBase64
+    // LinkedIn (and most crawlers) require a real https:// URL for og:image.
+    // Base64 data URIs are silently ignored. Fall back to the site og:image
+    // (which is a hosted URL) when the cover is a base64 string.
+    if (cover && cover.startsWith('http')) return cover
+    return seoStore.config.ogImage
+})
 
 const publishedTime = computed(() =>
     meta.value?.publishDate instanceof Date
