@@ -86,17 +86,19 @@ export async function fetchPublishedPosts(): Promise<BlogPostMeta[]> {
  * Returns `null` if not found or not published.
  */
 export async function fetchPostBySlug(slug: string): Promise<BlogPostMeta | null> {
+    // MUST include isPublished == true so Firestore security rules allow the
+    // list query for unauthenticated users (rules reject queries that could
+    // return documents the caller isn't permitted to read).
     const q = query(
         postsCol(),
         where('slug', '==', slug),
+        where('isPublished', '==', true),
         limit(1),
     )
     const snap = await getDocs(q)
     if (snap.empty) return null
     const d = snap.docs[0]!
-    const meta = snapToMeta(d.id, d.data() as Record<string, unknown>)
-    // Guard: do not expose unpublished posts to the public reader
-    return meta.isPublished ? meta : null
+    return snapToMeta(d.id, d.data() as Record<string, unknown>)
 }
 
 // ─── Admin reads ──────────────────────────────────────────────────────────────
