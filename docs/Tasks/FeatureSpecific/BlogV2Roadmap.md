@@ -74,7 +74,7 @@ Category filter is done. Tags need the same treatment.
 
 ### 3. Pagination
 
-**Status:** ☐ Not started  
+**Status:** ✅ Done (implemented as infinite / virtual scroll)  
 **Files:**
 
 - `src/views/BlogListView.vue` — add page state + paginatedPosts computed

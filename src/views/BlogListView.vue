@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, computed, ref } from 'vue'
+import { onMounted, onUnmounted, computed, ref, watch } from 'vue'
 import { useHead } from '@unhead/vue'
 import { useBlogStore } from '@/stores/blog'
 import { useSeoStore } from '@/stores/seo'
@@ -64,6 +64,51 @@ const listPosts = computed(() =>
         ? blogStore.posts.filter((p) => p.id !== featuredPost.value!.id)
         : blogStore.posts
 )
+
+// ─── Infinite / virtual scroll ───────────────────────────────────────────────
+const PAGE_SIZE = 6
+const visibleCount = ref(PAGE_SIZE)
+const sentinelEl = ref<HTMLElement | null>(null)
+
+// The list that virtual scroll is applied to (filter mode vs default mode)
+const activeList = computed(() =>
+    isFiltering.value ? filteredPosts.value : listPosts.value
+)
+const visiblePosts = computed(() => activeList.value.slice(0, visibleCount.value))
+const hasMore = computed(() => visibleCount.value < activeList.value.length)
+
+// Reset to first page whenever filters/search change
+watch([searchQuery, activeCategory, activeTag], () => {
+    visibleCount.value = PAGE_SIZE
+})
+
+let _observer: IntersectionObserver | null = null
+
+onMounted(() => {
+    _observer = new IntersectionObserver(
+        (entries) => {
+            if (entries[0]?.isIntersecting && hasMore.value) {
+                visibleCount.value += PAGE_SIZE
+            }
+        },
+        { rootMargin: '300px' },
+    )
+    watch(
+        sentinelEl,
+        (el, _, onCleanup) => {
+            if (el) {
+                _observer!.observe(el)
+                onCleanup(() => _observer!.unobserve(el))
+            }
+        },
+        { immediate: true },
+    )
+})
+
+onUnmounted(() => {
+    _observer?.disconnect()
+    _observer = null
+})
 
 function toggleCategory(cat: string) {
     activeCategory.value = activeCategory.value === cat ? null : cat
@@ -248,7 +293,7 @@ useHead({
                     </div>
                     <!-- Filtered grid -->
                     <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <AbBlogCard v-for="post in filteredPosts" :key="post.id" :post="post" />
+                        <AbBlogCard v-for="post in visiblePosts" :key="post.id" :post="post" />
                     </div>
                 </template>
 
@@ -262,9 +307,28 @@ useHead({
 
                     <!-- Regular grid -->
                     <div v-if="listPosts.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <AbBlogCard v-for="post in listPosts" :key="post.id" :post="post" />
+                        <AbBlogCard v-for="post in visiblePosts" :key="post.id" :post="post" />
                     </div>
                 </template>
+
+                <!-- ── Infinite scroll sentinel ── -->
+                <div ref="sentinelEl" class="mt-10 flex justify-center" aria-hidden="true">
+                    <!-- Spinner shown while more posts remain -->
+                    <transition
+                        enter-active-class="transition-opacity duration-300"
+                        leave-active-class="transition-opacity duration-200"
+                        enter-from-class="opacity-0" leave-to-class="opacity-0">
+                        <div v-if="hasMore" class="flex items-center gap-2 text-gray-400 dark:text-slate-500 text-sm">
+                            <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4" />
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                            </svg>
+                            <span>Loading more posts…</span>
+                        </div>
+                    </transition>
+                </div>
 
             </template>
 
