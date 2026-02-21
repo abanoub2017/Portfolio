@@ -11,13 +11,9 @@
  * blog_filter_applied  Fired whenever a search, category, or tag filter changes
  */
 
-import { useGtag } from 'vue-gtag'
+import { event } from 'vue-gtag'
 
 export function useBlogAnalytics() {
-    // useGtag() is safe to call even when GA isn't initialised —
-    // it returns no-op stubs, so we never need to guard the call site.
-    const { event } = useGtag()
-
     /** Call once in BlogListView onMounted */
     function trackBlogListView() {
         event('blog_list_view')
