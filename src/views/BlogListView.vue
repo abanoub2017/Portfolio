@@ -6,11 +6,13 @@ import { useBlogStore } from '@/stores/blog'
 import { useSeoStore } from '@/stores/seo'
 import AbBlogCard from '@/components/blog/AbBlogCard.vue'
 import AbBlogCardSkeleton from '@/components/blog/AbBlogCardSkeleton.vue'
+import { useBlogAnalytics } from '@/composables/useBlogAnalytics'
 
 const blogStore = useBlogStore()
 const seoStore = useSeoStore()
 const route = useRoute()
 const router = useRouter()
+const { trackBlogListView, trackFilterApplied } = useBlogAnalytics()
 
 // Seed filter state from URL query params on first render
 const searchQuery = ref((route.query['q'] as string) ?? '')
@@ -88,9 +90,19 @@ watch([searchQuery, activeCategory, activeTag], () => {
 let _searchTimer: ReturnType<typeof setTimeout> | null = null
 watch(searchQuery, (val) => {
     if (_searchTimer) clearTimeout(_searchTimer)
-    _searchTimer = setTimeout(() => syncQuery(), 300)
+    _searchTimer = setTimeout(() => {
+        syncQuery()
+        trackFilterApplied('search', val.trim())
+    }, 300)
 })
-watch([activeCategory, activeTag], () => syncQuery())
+watch(activeCategory, (val) => {
+    syncQuery()
+    trackFilterApplied('category', val ?? '')
+})
+watch(activeTag, (val) => {
+    syncQuery()
+    trackFilterApplied('tag', val ?? '')
+})
 
 function syncQuery() {
     const q: Record<string, string> = {}
@@ -104,6 +116,7 @@ let _observer: IntersectionObserver | null = null
 
 onMounted(() => {
     blogStore.loadPublished()
+    trackBlogListView()
     _observer = new IntersectionObserver(
         (entries) => {
             if (entries[0]?.isIntersecting && hasMore.value) {

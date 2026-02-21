@@ -110,7 +110,7 @@ Makes filters shareable and survive page refresh.
 
 ### 5. GA4 Analytics Events
 
-**Status:** ☐ Not started  
+**Status:** ✅ Done  
 **Files:**
 
 - `src/composables/useBlogAnalytics.ts` — create

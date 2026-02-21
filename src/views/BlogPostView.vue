@@ -1,20 +1,31 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { useHead, useSeoMeta } from '@unhead/vue'
 import { useBlogStore } from '@/stores/blog'
 import { useSeoStore } from '@/stores/seo'
 import AbPostReader from '@/components/blog/AbPostReader.vue'
+import { useBlogAnalytics } from '@/composables/useBlogAnalytics'
 
 const route = useRoute()
 const blogStore = useBlogStore()
 const seoStore = useSeoStore()
+const { trackBlogPostView } = useBlogAnalytics()
 
 const slug = computed(() => route.params['slug'] as string)
 
 onMounted(() => {
     if (slug.value) blogStore.loadPostBySlug(slug.value)
 })
+
+// Fire analytics once meta has loaded
+watch(
+    () => blogStore.currentMeta,
+    (m) => {
+        if (m) trackBlogPostView(m.slug, m.title, m.category)
+    },
+    { once: true },
+)
 
 // ─── Derived state ────────────────────────────────────────────────────────────
 
