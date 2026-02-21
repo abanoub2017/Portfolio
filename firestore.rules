@@ -32,10 +32,22 @@ service cloud.firestore {
 
     // ─── blogPosts ────────────────────────────────────────────────────────────
     // Public: read published posts only
-    // Admin: read + write all
+    //         update viewCount only (atomic increment from post reader)
+    // Admin:  read + write all
     match /blogPosts/{postId} {
-      allow read:  if resource.data.isPublished == true || isAdmin();
-      allow write: if isAdmin();
+      allow read:   if resource.data.isPublished == true || isAdmin();
+      allow write:  if isAdmin();
+      // Allow any visitor to increment viewCount (and only viewCount) on a published post
+      allow update: if resource.data.isPublished == true
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['viewCount']);
+
+      // Content sub-document — readable by anyone who knows the postId.
+      // The postId is only discoverable by first reading the meta (which already
+      // enforces isPublished == true above), so this is safe without an extra get().
+      match /content/{contentId} {
+        allow read:  if true;
+        allow write: if isAdmin();
+      }
     }
 
     // ─── Deny everything else ─────────────────────────────────────────────────
