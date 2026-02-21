@@ -56,7 +56,7 @@ match /blogPosts/{postId} {
 
 ### 2. Tag Filter
 
-**Status:** ☐ Not started  
+**Status:** ✅ Done  
 **File:** `src/views/BlogListView.vue`  
 **Spec ref:** `Blog.md §8 Phase 6`
 

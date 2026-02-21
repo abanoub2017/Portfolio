@@ -14,6 +14,7 @@ onMounted(() => blogStore.loadPublished())
 // ─── Search & filter state ────────────────────────────────────────────────────
 const searchQuery = ref('')
 const activeCategory = ref<string | null>(null)
+const activeTag = ref<string | null>(null)
 
 // All unique categories from published posts
 const categories = computed<string[]>(() => {
@@ -21,13 +22,24 @@ const categories = computed<string[]>(() => {
     return [...set].sort()
 })
 
-const isFiltering = computed(() => !!searchQuery.value.trim() || !!activeCategory.value)
+// All unique tags from published posts
+const allTags = computed<string[]>(() => {
+    const set = new Set(blogStore.posts.flatMap((p) => p.tags).filter(Boolean))
+    return [...set].sort()
+})
 
-// Posts matching the current search + category filter
+const isFiltering = computed(
+    () => !!searchQuery.value.trim() || !!activeCategory.value || !!activeTag.value,
+)
+
+// Posts matching the current search + category + tag filter
 const filteredPosts = computed(() => {
     let posts = blogStore.posts
     if (activeCategory.value) {
         posts = posts.filter((p) => p.category === activeCategory.value)
+    }
+    if (activeTag.value) {
+        posts = posts.filter((p) => p.tags.includes(activeTag.value!))
     }
     const q = searchQuery.value.trim().toLowerCase()
     if (q) {
@@ -57,9 +69,14 @@ function toggleCategory(cat: string) {
     activeCategory.value = activeCategory.value === cat ? null : cat
 }
 
+function toggleTag(tag: string) {
+    activeTag.value = activeTag.value === tag ? null : tag
+}
+
 function clearFilters() {
     searchQuery.value = ''
     activeCategory.value = null
+    activeTag.value = null
 }
 
 // ─── Head ─────────────────────────────────────────────────────────────────────
@@ -117,11 +134,11 @@ useHead({
                     </button>
                 </div>
 
-                <!-- Row 2: category pills + results count -->
+                <!-- Row 2: category pills -->
                 <div v-if="categories.length" class="flex flex-wrap items-center gap-2">
                     <span
-                        class="text-xs font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-widest mr-1 shrink-0">
-                        Filter
+                        class="text-xs font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-widest mr-1 shrink-0 w-12">
+                        Category
                     </span>
                     <button @click="activeCategory = null"
                         class="px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 border"
@@ -136,6 +153,21 @@ useHead({
                             ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm shadow-indigo-200 dark:shadow-indigo-900/40'
                             : 'bg-transparent text-gray-500 dark:text-slate-400 border-gray-200 dark:border-slate-700 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-300'">
                         {{ cat }}
+                    </button>
+                </div>
+
+                <!-- Row 3: tag pills + results count -->
+                <div v-if="allTags.length" class="flex flex-wrap items-center gap-2">
+                    <span
+                        class="text-xs font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-widest mr-1 shrink-0 w-12">
+                        Tags
+                    </span>
+                    <button v-for="tag in allTags" :key="tag" @click="toggleTag(tag)"
+                        class="px-3 py-1 rounded-full text-xs font-medium transition-all duration-200 border"
+                        :class="activeTag === tag
+                            ? 'bg-violet-600 text-white border-violet-600 shadow-sm shadow-violet-200 dark:shadow-violet-900/40'
+                            : 'bg-transparent text-gray-500 dark:text-slate-400 border-gray-200 dark:border-slate-700 hover:bg-violet-50 dark:hover:bg-violet-900/20 hover:text-violet-600 dark:hover:text-violet-400 hover:border-violet-300'">
+                        #{{ tag }}
                     </button>
 
                     <!-- Results count (right side) -->
