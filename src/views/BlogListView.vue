@@ -137,7 +137,7 @@ useHead({
                 <!-- Row 2: category pills -->
                 <div v-if="categories.length" class="flex flex-wrap items-center gap-2">
                     <span
-                        class="text-xs font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-widest mr-1 shrink-0 w-12">
+                        class="text-xs font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-widest mr-1 shrink-0">
                         Category
                     </span>
                     <button @click="activeCategory = null"
@@ -159,7 +159,7 @@ useHead({
                 <!-- Row 3: tag pills + results count -->
                 <div v-if="allTags.length" class="flex flex-wrap items-center gap-2">
                     <span
-                        class="text-xs font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-widest mr-1 shrink-0 w-12">
+                        class="text-xs font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-widest mr-1 shrink-0">
                         Tags
                     </span>
                     <button v-for="tag in allTags" :key="tag" @click="toggleTag(tag)"
