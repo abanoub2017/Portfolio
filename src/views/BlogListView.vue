@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, computed } from 'vue'
+import { onMounted, computed, ref } from 'vue'
 import { useHead } from '@unhead/vue'
 import { useBlogStore } from '@/stores/blog'
 import { useSeoStore } from '@/stores/seo'
@@ -10,6 +10,36 @@ const blogStore = useBlogStore()
 const seoStore = useSeoStore()
 
 onMounted(() => blogStore.loadPublished())
+
+// ─── Search & filter state ────────────────────────────────────────────────────
+const searchQuery = ref('')
+const activeCategory = ref<string | null>(null)
+
+// All unique categories from published posts
+const categories = computed<string[]>(() => {
+    const set = new Set(blogStore.posts.map((p) => p.category).filter(Boolean))
+    return [...set].sort()
+})
+
+const isFiltering = computed(() => !!searchQuery.value.trim() || !!activeCategory.value)
+
+// Posts matching the current search + category filter
+const filteredPosts = computed(() => {
+    let posts = blogStore.posts
+    if (activeCategory.value) {
+        posts = posts.filter((p) => p.category === activeCategory.value)
+    }
+    const q = searchQuery.value.trim().toLowerCase()
+    if (q) {
+        posts = posts.filter(
+            (p) =>
+                p.title.toLowerCase().includes(q) ||
+                p.excerpt.toLowerCase().includes(q) ||
+                p.tags.some((t) => t.toLowerCase().includes(q)),
+        )
+    }
+    return posts
+})
 
 // ─── Featured post (first featured one, if any) ───────────────────────────────
 const featuredPost = computed(() =>
@@ -22,6 +52,15 @@ const listPosts = computed(() =>
         ? blogStore.posts.filter((p) => p.id !== featuredPost.value!.id)
         : blogStore.posts
 )
+
+function toggleCategory(cat: string) {
+    activeCategory.value = activeCategory.value === cat ? null : cat
+}
+
+function clearFilters() {
+    searchQuery.value = ''
+    activeCategory.value = null
+}
 
 // ─── Head ─────────────────────────────────────────────────────────────────────
 useHead({
@@ -48,12 +87,66 @@ useHead({
         <div class="container mx-auto px-5">
 
             <!-- ─── Section header ─────────────────────────────────────────────────── -->
-            <div class="section-header mb-14">
+            <div class="section-header mb-10">
                 <span class="section-label">Blog</span>
                 <h1 class="section-title">Thoughts &amp; Writings</h1>
                 <p class="section-subtitle">
                     Articles on frontend engineering, tooling, and career growth.
                 </p>
+            </div>
+
+            <!-- ─── Search & filter bar ───────────────────────────────────────────── -->
+            <div v-if="!blogStore.isLoading && blogStore.posts.length"
+                class="mb-12 rounded-2xl border border-gray-200 dark:border-slate-700/60 bg-white dark:bg-slate-800/60 backdrop-blur-sm p-5 shadow-sm space-y-4">
+
+                <!-- Row 1: search -->
+                <div class="relative">
+                    <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-slate-500 pointer-events-none"
+                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 15.803a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
+                    <input v-model="searchQuery" type="search" placeholder="Search by title, excerpt or tag…"
+                        class="w-full pl-11 pr-10 py-3 rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/60 text-gray-800 dark:text-white text-sm placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-400 dark:focus:border-indigo-500 transition" />
+                    <!-- Clear search x -->
+                    <button v-if="searchQuery" @click="searchQuery = ''"
+                        class="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-slate-200 transition">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Row 2: category pills + results count -->
+                <div v-if="categories.length" class="flex flex-wrap items-center gap-2">
+                    <span
+                        class="text-xs font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-widest mr-1 shrink-0">
+                        Filter
+                    </span>
+                    <button @click="activeCategory = null"
+                        class="px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 border"
+                        :class="!activeCategory
+                            ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm shadow-indigo-200 dark:shadow-indigo-900/40'
+                            : 'bg-transparent text-gray-500 dark:text-slate-400 border-gray-200 dark:border-slate-700 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-300'">
+                        All
+                    </button>
+                    <button v-for="cat in categories" :key="cat" @click="toggleCategory(cat)"
+                        class="px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 border"
+                        :class="activeCategory === cat
+                            ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm shadow-indigo-200 dark:shadow-indigo-900/40'
+                            : 'bg-transparent text-gray-500 dark:text-slate-400 border-gray-200 dark:border-slate-700 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-300'">
+                        {{ cat }}
+                    </button>
+
+                    <!-- Results count (right side) -->
+                    <span v-if="isFiltering" class="ml-auto text-xs text-gray-400 dark:text-slate-500 shrink-0">
+                        {{ filteredPosts.length }}&nbsp;result{{ filteredPosts.length !== 1 ? 's' : '' }}
+                        <button @click="clearFilters"
+                            class="ml-1.5 text-indigo-500 dark:text-indigo-400 hover:underline font-medium">
+                            Clear
+                        </button>
+                    </span>
+                </div>
             </div>
 
             <!-- ─── Loading state ─────────────────────────────────────────────────── -->
@@ -100,16 +193,47 @@ useHead({
 
             <!-- ─── Posts ──────────────────────────────────────────────────────────── -->
             <template v-else>
-                <!-- Featured post (wide hero card) -->
-                <div v-if="featuredPost" class="mb-10">
-                    <AbBlogCard :post="featuredPost"
-                        class="sm:flex-row [&_.card-cover]:sm:w-2/5 [&_.card-cover]:sm:h-64" />
-                </div>
 
-                <!-- Regular grid -->
-                <div v-if="listPosts.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <AbBlogCard v-for="post in listPosts" :key="post.id" :post="post" />
-                </div>
+                <!-- ── Filtered / search results ── -->
+                <template v-if="isFiltering">
+                    <!-- No results -->
+                    <div v-if="filteredPosts.length === 0" class="py-20 flex flex-col items-center text-center gap-4">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center">
+                            <svg class="w-8 h-8 text-indigo-300 dark:text-indigo-700" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="1.2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 15.803a7.5 7.5 0 0010.607 10.607z" />
+                            </svg>
+                        </div>
+                        <p class="text-gray-500 dark:text-gray-400">
+                            No posts match your search.
+                            <button @click="clearFilters"
+                                class="text-indigo-600 dark:text-indigo-400 hover:underline ml-1">
+                                Clear filters
+                            </button>
+                        </p>
+                    </div>
+                    <!-- Filtered grid -->
+                    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <AbBlogCard v-for="post in filteredPosts" :key="post.id" :post="post" />
+                    </div>
+                </template>
+
+                <!-- ── Default: featured hero + grid ── -->
+                <template v-else>
+                    <!-- Featured post (wide hero card) -->
+                    <div v-if="featuredPost" class="mb-10">
+                        <AbBlogCard :post="featuredPost"
+                            class="sm:flex-row [&_.card-cover]:sm:w-2/5 [&_.card-cover]:sm:h-64" />
+                    </div>
+
+                    <!-- Regular grid -->
+                    <div v-if="listPosts.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <AbBlogCard v-for="post in listPosts" :key="post.id" :post="post" />
+                    </div>
+                </template>
+
             </template>
 
         </div>

@@ -47,6 +47,8 @@ export interface BlogPostMeta {
     metaTitle: string
     /** <meta description> override (falls back to `excerpt` if empty) */
     metaDescription: string
+    /** Total number of times the post has been opened — incremented on every visit */
+    viewCount: number
 }
 
 // ─── Content ──────────────────────────────────────────────────────────────────
@@ -75,9 +77,9 @@ export interface BlogPost extends BlogPostMeta {
 
 /**
  * Shape used when creating or updating a post from the admin editor.
- * Omits auto-generated server fields (`id`, `createdAt`, `updatedAt`).
+ * Omits auto-generated server fields (`id`, `createdAt`, `updatedAt`, `viewCount`).
  */
-export type BlogPostDraft = Omit<BlogPostMeta, 'id' | 'createdAt' | 'updatedAt'>
+export type BlogPostDraft = Omit<BlogPostMeta, 'id' | 'createdAt' | 'updatedAt' | 'viewCount'>
 
 // ─── ProseMirror JSON (TipTap serialisation) ──────────────────────────────────
 

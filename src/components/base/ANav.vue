@@ -56,7 +56,7 @@ function onNavClick(id: string) {
 }
 let observer: IntersectionObserver | null = null
 
-function setupObserver(): void {
+function setupObserver(): number {
     observer = new IntersectionObserver(
         (entries: IntersectionObserverEntry[]) => {
             entries.forEach((entry) => {

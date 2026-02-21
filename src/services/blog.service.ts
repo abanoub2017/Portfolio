@@ -26,6 +26,7 @@ import {
     limit,
     serverTimestamp,
     Timestamp,
+    increment,
 } from 'firebase/firestore'
 import { getDb } from '@/firebase'
 import type { BlogPostMeta, BlogPostContent, BlogPostDraft } from '@/types/blog'
@@ -59,6 +60,7 @@ function snapToMeta(id: string, data: Record<string, unknown>): BlogPostMeta {
         readingTime: (data.readingTime as number) ?? 1,
         metaTitle: (data.metaTitle as string) ?? '',
         metaDescription: (data.metaDescription as string) ?? '',
+        viewCount: (data.viewCount as number) ?? 0,
     }
 }
 
@@ -222,4 +224,13 @@ export async function togglePublish(id: string, isPublished: boolean): Promise<v
 export async function deletePost(id: string): Promise<void> {
     await deleteDoc(contentDoc(id))
     await deleteDoc(postDoc(id))
+}
+
+/**
+ * Atomically increment the view counter for a post.
+ * Fire-and-forget — call without await from the public reader.
+ * Uses Firestore's atomic increment so concurrent visitors never overwrite each other.
+ */
+export async function incrementViewCount(id: string): Promise<void> {
+    await updateDoc(postDoc(id), { viewCount: increment(1) })
 }

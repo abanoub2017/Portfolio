@@ -22,6 +22,7 @@ import {
     updatePost,
     togglePublish,
     deletePost,
+    incrementViewCount,
 } from '@/services/blog.service'
 import type { BlogPostMeta, BlogPostContent, BlogPostDraft } from '@/types/blog'
 
@@ -86,6 +87,8 @@ export const useBlogStore = defineStore('blog', () => {
             if (!meta) return
             currentMeta.value = meta
             currentContent.value = await fetchPostContent(meta.id)
+            // Fire-and-forget: don't block rendering on the counter write
+            incrementViewCount(meta.id).catch(() => { /* non-critical */ })
         } catch (e) {
             handleError(e, 'Failed to load post')
         } finally {
