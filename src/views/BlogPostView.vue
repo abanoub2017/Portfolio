@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue'
+import { computed, onMounted, onServerPrefetch, watch } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { useHead, useSeoMeta } from '@unhead/vue'
 import { useBlogStore } from '@/stores/blog'
@@ -14,8 +14,16 @@ const { trackBlogPostView } = useBlogAnalytics()
 
 const slug = computed(() => route.params['slug'] as string)
 
+// During SSG: runs before HTML is written so meta tags are baked in
+onServerPrefetch(async () => {
+    if (slug.value) await blogStore.loadPostBySlug(slug.value)
+})
+
+// During client-side navigation: fetch only if not already loaded by SSG hydration
 onMounted(() => {
-    if (slug.value) blogStore.loadPostBySlug(slug.value)
+    if (slug.value && !blogStore.currentMeta) {
+        blogStore.loadPostBySlug(slug.value)
+    }
 })
 
 // Fire analytics once meta has loaded

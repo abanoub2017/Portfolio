@@ -28,11 +28,17 @@ export function getFirebaseApp(): FirebaseApp {
 
 export function getDb(): Firestore {
     if (!_db) {
-        _db = initializeFirestore(getFirebaseApp(), {
-            cache: persistentLocalCache({
-                tabManager: persistentMultipleTabManager(),
-            }),
-        })
+        // During SSG (Node.js), IndexedDB is unavailable — use memory-only cache.
+        // In the browser, use the persistent multi-tab cache as normal.
+        if (import.meta.env.SSR) {
+            _db = initializeFirestore(getFirebaseApp(), {})
+        } else {
+            _db = initializeFirestore(getFirebaseApp(), {
+                cache: persistentLocalCache({
+                    tabManager: persistentMultipleTabManager(),
+                }),
+            })
+        }
     }
     return _db
 }
