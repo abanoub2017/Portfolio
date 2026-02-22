@@ -13,7 +13,7 @@
 
 const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME as string
 const UPLOAD_PRESET = 'blog_covers'
-const UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`
+const UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME ? CLOUD_NAME : `profile-img`}/image/upload`
 
 /**
  * Upload a cover image file to Cloudinary and return its public https:// URL.
