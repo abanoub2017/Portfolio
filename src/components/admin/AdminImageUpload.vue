@@ -1,23 +1,26 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useImageUpload } from '@/composables/admin/useImageUpload'
+import { uploadCoverImage } from '@/services/storage.service'
 
 const props = defineProps<{ modelValue: string }>()
 const emit = defineEmits<{ 'update:modelValue': [value: string] }>()
 
-const { compress, isCompressing, error, sizeKB } = useImageUpload()
 const isDragging = ref(false)
+const isUploading = ref(false)
+const error = ref<string | null>(null)
 const inputRef = ref<HTMLInputElement | null>(null)
 
 async function handleFile(file: File) {
-    if (!file.type.startsWith('image/')) {
-        return
-    }
+    if (!file.type.startsWith('image/')) return
+    isUploading.value = true
+    error.value = null
     try {
-        const base64 = await compress(file)
-        emit('update:modelValue', base64)
-    } catch {
-        // error is already set in composable
+        const url = await uploadCoverImage(file)
+        emit('update:modelValue', url)
+    } catch (e) {
+        error.value = e instanceof Error ? e.message : 'Upload failed'
+    } finally {
+        isUploading.value = false
     }
 }
 
@@ -65,7 +68,7 @@ function clear() {
             <template v-else>
                 <div
                     class="h-32 flex flex-col items-center justify-center gap-2 text-gray-500 select-none pointer-events-none">
-                    <svg v-if="isCompressing" class="w-6 h-6 animate-spin text-indigo-400" fill="none"
+                    <svg v-if="isUploading" class="w-6 h-6 animate-spin text-indigo-400" fill="none"
                         viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
@@ -75,20 +78,11 @@ function clear() {
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
                     </svg>
-                    <span class="text-sm" v-if="isCompressing">Compressing…</span>
+                    <span class="text-sm" v-if="isUploading">Uploading…</span>
                     <span class="text-sm" v-else>Drop image here or click to browse</span>
-                    <span class="text-xs text-gray-600">Compressed to ≤ 80 KB · WebP · max 800 px</span>
+                    <span class="text-xs text-gray-600">Uploaded to Cloudinary · served as WebP</span>
                 </div>
             </template>
-        </div>
-
-        <!-- Size badge -->
-        <div v-if="sizeKB !== null && modelValue" class="flex items-center gap-1.5 text-xs text-gray-500">
-            <svg class="w-3.5 h-3.5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-            </svg>
-            Compressed to <span class="text-green-400 font-medium">{{ sizeKB }} KB</span>
         </div>
 
         <!-- Error -->
