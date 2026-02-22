@@ -76,8 +76,15 @@ const publishedTime = computed(() =>
         : '',
 )
 
+const canonicalUrl = computed(() =>
+    `${seoStore.config.siteUrl}/blog/${slug.value}`,
+)
+
 useHead({
     title: pageTitle,
+    link: [
+        { rel: 'canonical', href: canonicalUrl },
+    ],
     meta: [
         { name: 'description', content: pageDescription },
         { property: 'og:type', content: 'article' },
@@ -98,6 +105,7 @@ useSeoMeta({
     ogTitle: pageTitle,
     ogDescription: pageDescription,
     ogImage,
+    ogUrl: canonicalUrl,
     ogType: 'article',
     twitterCard: 'summary_large_image',
     twitterTitle: pageTitle,
