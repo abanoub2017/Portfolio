@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Abanoub George — Blog</title>
+    <link>https://abanoubgeorge.net/blog</link>
+    <description>Articles on Vue.js, TypeScript, Firebase and front-end engineering by Abanoub George.</description>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 23 Feb 2026 12:01:01 GMT</lastBuildDate>
+    <atom:link href="https://abanoubgeorge.net/rss.xml" rel="self" type="application/rss+xml" />
+    <image>
+      <url>https://abanoubgeorge.net/img/profile.png</url>
+      <title>Abanoub George — Blog</title>
+      <link>https://abanoubgeorge.net/blog</link>
+    </image>
+  <item>
+    <title>How to Write Your First Nitro API in Nuxt 4 (Step-by-Step)</title>
+    <link>https://abanoubgeorge.net/blog/how-to-write-your-first-nitro-api-in-nuxt-4-step-by-step</link>
+    <guid isPermaLink="true">https://abanoubgeorge.net/blog/how-to-write-your-first-nitro-api-in-nuxt-4-step-by-step</guid>
+    <pubDate>Mon, 23 Feb 2026 08:33:05 GMT</pubDate>
+    <description>Build your first Nitro API in Nuxt 4 with this step-by-step guide. Learn how the /server/api directory works, handle GET and POST requests, and connect your frontend using $fetch.</description>
+    <category>Nitro</category>
+    <category>nuxt4</category>
+    <category>nuxt3</category>
+    <category>nitro</category>
+    <category>h3</category>
+    <category>server-side</category>
+    <category>frontend</category>
+    <category>https</category>
+  </item>
+  <item>
+    <title>What Is Nitro in Nuxt 4? Complete Guide to the Server Engine</title>
+    <link>https://abanoubgeorge.net/blog/what-is-nitro-in-nuxt-4-complete-guide-to-the-server-engine</link>
+    <guid isPermaLink="true">https://abanoubgeorge.net/blog/what-is-nitro-in-nuxt-4-complete-guide-to-the-server-engine</guid>
+    <pubDate>Sat, 21 Feb 2026 16:43:34 GMT</pubDate>
+    <description>Nuxt 4 is no longer just a frontend framework.
+With Nitro, it becomes a full-stack framework capable of handling APIs, SSR, middleware, caching, and serverless deployments.
+</description>
+    <category>Nitro</category>
+    <category>nuxt4</category>
+    <category>nuxt3</category>
+    <category>nitro</category>
+    <category>h3</category>
+    <category>server-side</category>
+    <category>frontend</category>
+    <category>https</category>
+  </item>
+  </channel>
+</rss>
