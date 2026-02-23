@@ -23,8 +23,9 @@ import {
     togglePublish,
     deletePost,
     incrementViewCount,
+    toggleReaction,
 } from '@/services/blog.service'
-import type { BlogPostMeta, BlogPostContent, BlogPostDraft } from '@/types/blog'
+import type { BlogPostMeta, BlogPostContent, BlogPostDraft, ReactionKey } from '@/types/blog'
 
 export const useBlogStore = defineStore('blog', () => {
     // ─── State ─────────────────────────────────────────────────────────────────
@@ -202,6 +203,13 @@ export const useBlogStore = defineStore('blog', () => {
     }
 
     /**
+     * Toggle a reaction on the current post (fire-and-forget, optimistic).
+     */
+    function react(id: string, key: ReactionKey, direction: 1 | -1): void {
+        toggleReaction(id, key, direction).catch(() => { /* non-critical */ })
+    }
+
+    /**
      * Delete a post and remove it from the local list.
      */
     async function remove(id: string): Promise<void> {
@@ -236,5 +244,6 @@ export const useBlogStore = defineStore('blog', () => {
         save,
         toggle,
         remove,
+        react,
     }
 })

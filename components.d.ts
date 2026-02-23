@@ -26,6 +26,7 @@ declare module 'vue' {
     AbDarkMode: typeof import('./src/components/utils/AbDarkMode.vue')['default']
     AbHamburger: typeof import('./src/components/utils/AbHamburger.vue')['default']
     AbPostReader: typeof import('./src/components/blog/AbPostReader.vue')['default']
+    AbReactions: typeof import('./src/components/blog/AbReactions.vue')['default']
     AbTextModel: typeof import('./src/components/utils/AbTextModel.vue')['default']
     AbToast: typeof import('./src/components/utils/AbToast.vue')['default']
     AbTypewriter: typeof import('./src/components/utils/AbTypewriter.vue')['default']

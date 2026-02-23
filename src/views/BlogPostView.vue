@@ -5,12 +5,18 @@ import { useHead, useSeoMeta } from '@unhead/vue'
 import { useBlogStore } from '@/stores/blog'
 import { useSeoStore } from '@/stores/seo'
 import AbPostReader from '@/components/blog/AbPostReader.vue'
+import AbReactions from '@/components/blog/AbReactions.vue'
 import { useBlogAnalytics } from '@/composables/useBlogAnalytics'
+import type { ReactionKey } from '@/types/blog'
 
 const route = useRoute()
 const blogStore = useBlogStore()
 const seoStore = useSeoStore()
 const { trackBlogPostView } = useBlogAnalytics()
+
+function handleReact(key: ReactionKey, direction: 1 | -1) {
+    if (meta.value) blogStore.react(meta.value.id, key, direction)
+}
 
 const slug = computed(() => route.params['slug'] as string)
 
@@ -164,75 +170,100 @@ useSeoMeta({
     </section>
 
     <!-- ─── Post ─────────────────────────────────────────────────────────── -->
-    <article v-else-if="meta" class="min-h-screen pt-28 pb-24 bg-white dark:bg-slate-900">
-        <div class="max-w-3xl mx-auto px-5">
+    <article v-else-if="meta" class="min-h-screen pt-20 lg:pt-28 pb-28 lg:pb-24 bg-white dark:bg-slate-900">
 
-            <!-- Back link -->
-            <RouterLink to="/blog"
-                class="inline-flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors mb-8">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-                    aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                </svg>
-                All posts
-            </RouterLink>
+        <!-- Desktop layout: sticky sidebar LEFT + content ──────────────────── -->
+        <div class="max-w-4xl mx-auto px-5">
+            <div class="flex gap-6 items-start">
 
-            <!-- Cover image -->
-            <img v-if="meta.coverImageBase64" :src="meta.coverImageBase64" :alt="meta.title"
-                class="w-full aspect-video object-cover rounded-2xl mb-10" />
+                <!-- ── Sticky reaction sidebar (desktop lg+) ──────────────── -->
+                <aside class="hidden lg:flex flex-col gap-1 sticky top-28 shrink-0 pt-14">
+                    <AbReactions :post="meta" variant="sidebar" :on-react="handleReact" />
+                </aside>
 
-            <!-- Post header -->
-            <header class="mb-10">
-                <!-- Category -->
-                <span v-if="meta.category"
-                    class="inline-block text-xs font-semibold tracking-widest uppercase text-indigo-600 dark:text-indigo-400 mb-3">
-                    {{ meta.category }}
-                </span>
+                <!-- ── Main article content ───────────────────────────────── -->
+                <div class="flex-1 min-w-0">
 
-                <!-- Title -->
-                <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white leading-tight mb-4">
-                    {{ meta.title }}
-                </h1>
-
-                <!-- Meta row: date · reading time · views -->
-                <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
-                    <time :datetime="publishedTime">
-                        {{ formatDate(meta.publishDate) }}
-                    </time>
-                    <span aria-hidden="true">·</span>
-                    <span>{{ meta.readingTime }} min read</span>
-                    <span aria-hidden="true">·</span>
-                    <span class="inline-flex items-center gap-1">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+                    <!-- Back link -->
+                    <RouterLink to="/blog"
+                        class="inline-flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors mb-8">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
                             aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.964-7.178z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
                         </svg>
-                        {{ (meta.viewCount ?? 0).toLocaleString() }} views
-                    </span>
-                </div>
+                        All posts
+                    </RouterLink>
 
-                <!-- Tags -->
-                <div v-if="meta.tags.length" class="flex flex-wrap gap-2 mt-4">
-                    <span v-for="tag in meta.tags" :key="tag"
-                        class="px-2.5 py-0.5 text-xs rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300">
-                        #{{ tag }}
-                    </span>
-                </div>
-            </header>
+                    <!-- Cover image -->
+                    <img v-if="meta.coverImageBase64" :src="meta.coverImageBase64" :alt="meta.title"
+                        class="w-full aspect-video object-cover rounded-2xl mb-10" />
 
-            <!-- Post body -->
-            <AbPostReader v-if="content" :doc="content.body" />
+                    <!-- Post header -->
+                    <header class="mb-10">
+                        <!-- Category -->
+                        <span v-if="meta.category"
+                            class="inline-block text-xs font-semibold tracking-widest uppercase text-indigo-600 dark:text-indigo-400 mb-3">
+                            {{ meta.category }}
+                        </span>
 
-            <!-- Bottom nav -->
-            <div class="mt-16 pt-8 border-t border-gray-200 dark:border-slate-700">
-                <RouterLink to="/blog"
-                    class="inline-flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-medium text-sm hover:underline">
-                    ← Back to all posts
-                </RouterLink>
-            </div>
+                        <!-- Title -->
+                        <h1
+                            class="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white leading-tight mb-4">
+                            {{ meta.title }}
+                        </h1>
+
+                        <!-- Meta row: date · reading time · views -->
+                        <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
+                            <time :datetime="publishedTime">
+                                {{ formatDate(meta.publishDate) }}
+                            </time>
+                            <span aria-hidden="true">·</span>
+                            <span>{{ meta.readingTime }} min read</span>
+                            <span aria-hidden="true">·</span>
+                            <span class="inline-flex items-center gap-1">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                    stroke-width="2" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.964-7.178z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                {{ (meta.viewCount ?? 0).toLocaleString() }} views
+                            </span>
+                        </div>
+
+                        <!-- Tags -->
+                        <div v-if="meta.tags.length" class="flex flex-wrap gap-2 mt-4">
+                            <span v-for="tag in meta.tags" :key="tag"
+                                class="px-2.5 py-0.5 text-xs rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300">
+                                #{{ tag }}
+                            </span>
+                        </div>
+                    </header>
+
+                    <!-- Post body -->
+                    <AbPostReader v-if="content" :doc="content.body" />
+
+                    <!-- Bottom nav -->
+                    <div class="mt-16 pt-8 border-t border-gray-200 dark:border-slate-700">
+                        <RouterLink to="/blog"
+                            class="inline-flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-medium text-sm hover:underline">
+                            ← Back to all posts
+                        </RouterLink>
+                    </div>
+
+                </div> <!-- end main content -->
+
+            </div> <!-- end flex row -->
+        </div> <!-- end max-w-5xl -->
+
+        <!-- ── Mobile fixed bottom reaction bar (<lg) ────────────────────── -->
+        <div class="lg:hidden fixed bottom-0 inset-x-0 z-50
+                    bg-white/90 dark:bg-slate-900/90 backdrop-blur-md
+                    border-t border-gray-200 dark:border-slate-700 py-2 px-4">
+            <AbReactions :post="meta" variant="bar" :on-react="handleReact" />
         </div>
+
     </article>
 </template>
 

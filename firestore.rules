@@ -37,9 +37,9 @@ service cloud.firestore {
     match /blogPosts/{postId} {
       allow read:   if resource.data.isPublished == true || isAdmin();
       allow write:  if isAdmin();
-      // Allow any visitor to increment viewCount (and only viewCount) on a published post
+      // Allow any visitor to increment viewCount or reactions on a published post
       allow update: if resource.data.isPublished == true
-                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['viewCount']);
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['viewCount', 'reactions']);
 
       // Content sub-document — readable by anyone who knows the postId.
       // The postId is only discoverable by first reading the meta (which already

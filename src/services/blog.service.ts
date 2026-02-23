@@ -29,7 +29,7 @@ import {
     increment,
 } from 'firebase/firestore'
 import { getDb } from '@/firebase'
-import type { BlogPostMeta, BlogPostContent, BlogPostDraft } from '@/types/blog'
+import type { BlogPostMeta, BlogPostContent, BlogPostDraft, ReactionKey } from '@/types/blog'
 
 // ─── Collection helpers ───────────────────────────────────────────────────────
 
@@ -61,6 +61,11 @@ function snapToMeta(id: string, data: Record<string, unknown>): BlogPostMeta {
         metaTitle: (data.metaTitle as string) ?? '',
         metaDescription: (data.metaDescription as string) ?? '',
         viewCount: (data.viewCount as number) ?? 0,
+        reactions: {
+            heart: ((data.reactions as Record<string, number>)?.heart ?? 0),
+            fire: ((data.reactions as Record<string, number>)?.fire ?? 0),
+            mind_blown: ((data.reactions as Record<string, number>)?.mind_blown ?? 0),
+        },
     }
 }
 
@@ -235,4 +240,20 @@ export async function deletePost(id: string): Promise<void> {
  */
 export async function incrementViewCount(id: string): Promise<void> {
     await updateDoc(postDoc(id), { viewCount: increment(1) })
+}
+
+/**
+ * Toggle a reaction emoji on a post (+1 when reacting, -1 when un-reacting).
+ * Fire-and-forget — call without await from the public reader.
+ *
+ * @param id        Firestore post document ID
+ * @param key       One of 'heart' | 'fire' | 'mind_blown'
+ * @param direction +1 to add reaction, -1 to remove
+ */
+export async function toggleReaction(
+    id: string,
+    key: ReactionKey,
+    direction: 1 | -1,
+): Promise<void> {
+    await updateDoc(postDoc(id), { [`reactions.${key}`]: increment(direction) })
 }

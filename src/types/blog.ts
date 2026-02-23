@@ -49,6 +49,12 @@ export interface BlogPostMeta {
     metaDescription: string
     /** Total number of times the post has been opened — incremented on every visit */
     viewCount: number
+    /** Per-emoji reaction counts — incremented/decremented by visitors (fire-and-forget) */
+    reactions: {
+        heart: number
+        fire: number
+        mind_blown: number
+    }
 }
 
 // ─── Content ──────────────────────────────────────────────────────────────────
@@ -79,7 +85,10 @@ export interface BlogPost extends BlogPostMeta {
  * Shape used when creating or updating a post from the admin editor.
  * Omits auto-generated server fields (`id`, `createdAt`, `updatedAt`, `viewCount`).
  */
-export type BlogPostDraft = Omit<BlogPostMeta, 'id' | 'createdAt' | 'updatedAt' | 'viewCount'>
+export type BlogPostDraft = Omit<BlogPostMeta, 'id' | 'createdAt' | 'updatedAt' | 'viewCount' | 'reactions'>
+
+/** The three reaction emoji keys */
+export type ReactionKey = 'heart' | 'fire' | 'mind_blown'
 
 // ─── ProseMirror JSON (TipTap serialisation) ──────────────────────────────────
 
