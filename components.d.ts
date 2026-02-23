@@ -27,6 +27,7 @@ declare module 'vue' {
     AbHamburger: typeof import('./src/components/utils/AbHamburger.vue')['default']
     AbPostReader: typeof import('./src/components/blog/AbPostReader.vue')['default']
     AbReactions: typeof import('./src/components/blog/AbReactions.vue')['default']
+    AbShareButtons: typeof import('./src/components/blog/AbShareButtons.vue')['default']
     AbTextModel: typeof import('./src/components/utils/AbTextModel.vue')['default']
     AbToast: typeof import('./src/components/utils/AbToast.vue')['default']
     AbTypewriter: typeof import('./src/components/utils/AbTypewriter.vue')['default']

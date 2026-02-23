@@ -6,6 +6,7 @@ import { useBlogStore } from '@/stores/blog'
 import { useSeoStore } from '@/stores/seo'
 import AbPostReader from '@/components/blog/AbPostReader.vue'
 import AbReactions from '@/components/blog/AbReactions.vue'
+import AbShareButtons from '@/components/blog/AbShareButtons.vue'
 import { useBlogAnalytics } from '@/composables/useBlogAnalytics'
 import type { ReactionKey } from '@/types/blog'
 
@@ -239,10 +240,20 @@ useSeoMeta({
                                 #{{ tag }}
                             </span>
                         </div>
+
+                        <!-- Share buttons -->
+                        <div class="flex items-center mt-5 pt-4 border-t border-gray-100 dark:border-slate-800">
+                            <AbShareButtons :title="meta.title" :url="canonicalUrl" />
+                        </div>
                     </header>
 
                     <!-- Post body -->
                     <AbPostReader v-if="content" :doc="content.body" />
+
+                    <!-- Share banner -->
+                    <div class="mt-14">
+                        <AbShareButtons :title="meta.title" :url="canonicalUrl" variant="banner" />
+                    </div>
 
                     <!-- Bottom nav -->
                     <div class="mt-16 pt-8 border-t border-gray-200 dark:border-slate-700">

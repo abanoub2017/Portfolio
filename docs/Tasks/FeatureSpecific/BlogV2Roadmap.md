@@ -177,7 +177,7 @@ async includedRoutes(paths) {
 
 ### 8. Share Buttons on Post Page
 
-**Status:** ☐ Not started  
+**Status:** ✅ Done  
 **File:** `src/views/BlogPostView.vue`
 
 Copy link + Twitter/X + LinkedIn share buttons below post title or at end of post.
