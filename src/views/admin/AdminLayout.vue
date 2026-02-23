@@ -21,6 +21,7 @@ const pageTitle = computed(() => {
         'admin-blog': 'Blog Posts',
         'admin-blog-new': 'New Post',
         'admin-blog-edit': 'Edit Post',
+        'admin-blog-preview': 'Preview Post',
         'admin-login': 'Admin Login',
     }
     const label = name ? (map[name] ?? 'Admin') : 'Admin'

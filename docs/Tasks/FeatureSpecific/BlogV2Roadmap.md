@@ -162,7 +162,7 @@ async includedRoutes(paths) {
 
 ### 7. Draft Preview Route
 
-**Status:** ☐ Not started  
+**Status:** ✅ Done  
 **Files:**
 
 - `src/views/admin/AdminBlogPreview.vue` — create (reuse `BlogPostView` layout, fetch by ID not slug)

@@ -34,6 +34,7 @@ declare module 'vue' {
     AdminAboutEditor: typeof import('./src/views/admin/editors/AdminAboutEditor.vue')['default']
     AdminBlogEditor: typeof import('./src/views/admin/AdminBlogEditor.vue')['default']
     AdminBlogList: typeof import('./src/views/admin/AdminBlogList.vue')['default']
+    AdminBlogPreview: typeof import('./src/views/admin/AdminBlogPreview.vue')['default']
     AdminContactEditor: typeof import('./src/views/admin/editors/AdminContactEditor.vue')['default']
     AdminDashboard: typeof import('./src/views/admin/AdminDashboard.vue')['default']
     AdminImageUpload: typeof import('./src/components/admin/AdminImageUpload.vue')['default']

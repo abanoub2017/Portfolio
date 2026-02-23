@@ -60,6 +60,11 @@ export const routes: RouteRecordRaw[] = [
         name: 'admin-blog-edit',
         component: () => import('../views/admin/AdminBlogEditor.vue'),
       },
+      {
+        path: 'blog/:id/preview',
+        name: 'admin-blog-preview',
+        component: () => import('../views/admin/AdminBlogPreview.vue'),
+      },
     ],
   },
 ]
