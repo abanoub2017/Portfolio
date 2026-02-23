@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onServerPrefetch, watch } from 'vue'
+import { computed, onMounted, onUnmounted, onServerPrefetch, watch, ref } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { useHead, useSeoMeta } from '@unhead/vue'
 import { useBlogStore } from '@/stores/blog'
@@ -27,14 +27,46 @@ onServerPrefetch(async () => {
     if (slug.value) await blogStore.loadPostBySlug(slug.value)
 })
 
-// During client-side navigation: fetch only if not already loaded by SSG hydration
+// ─── Scroll: reading progress + back-to-top ──────────────────────────────────
+
+const scrollProgress = ref(0)
+const showBackToTop = ref(false)
+
+function onScroll() {
+    const scrollY = window.scrollY
+    const total = document.body.scrollHeight - window.innerHeight
+    scrollProgress.value = total > 0 ? Math.min(100, (scrollY / total) * 100) : 0
+    showBackToTop.value = scrollY > 400
+}
+
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
 onMounted(() => {
-    if (slug.value && !blogStore.currentMeta) {
+    window.addEventListener('scroll', onScroll, { passive: true })
+    if (slug.value && (!blogStore.currentMeta || blogStore.currentMeta.slug !== slug.value)) {
         blogStore.loadPostBySlug(slug.value)
     }
     // Load post list in parallel for related posts (no-op if already loaded)
     if (!blogStore.posts.length) {
         blogStore.loadPublished()
+    }
+})
+
+onUnmounted(() => {
+    window.removeEventListener('scroll', onScroll)
+})
+
+// Vue Router reuses this component when navigating between posts (e.g. related posts).
+// onMounted won't fire again — watch slug to reload + reset scroll.
+watch(slug, (newSlug, oldSlug) => {
+    if (newSlug && newSlug !== oldSlug) {
+        blogStore.currentMeta = null
+        blogStore.currentContent = null
+        blogStore.loadPostBySlug(newSlug)
+        window.scrollTo({ top: 0, behavior: 'instant' })
+        scrollProgress.value = 0
     }
 })
 
@@ -135,6 +167,10 @@ useSeoMeta({
 </script>
 
 <template>
+    <!-- ─── Reading progress bar ──────────────────────────────────────────── -->
+    <div class="fixed top-0 left-0 z-[1000] h-1 bg-gradient-to-r from-indigo-500 to-violet-500 transition-none pointer-events-none"
+        :style="{ width: scrollProgress + '%' }" role="progressbar" :aria-valuenow="Math.round(scrollProgress)"
+        aria-valuemin="0" aria-valuemax="100" aria-label="Reading progress" />
     <!-- ─── Loading state ──────────────────────────────────────────────────── -->
     <section v-if="isLoading" class="min-h-screen pt-32 pb-20 bg-white dark:bg-slate-900">
         <div class="max-w-3xl mx-auto px-5 animate-pulse space-y-6">
@@ -288,7 +324,7 @@ useSeoMeta({
                 More in <span class="text-indigo-600 dark:text-indigo-400">{{ meta.category }}</span>
             </h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <AbBlogCard v-for="p in relatedPosts" :key="p.id" :post="p" />
+                <AbBlogCard v-for="p in relatedPosts" :key="p.id" :post="p" :hide-views="true" />
             </div>
         </div>
 
@@ -298,7 +334,18 @@ useSeoMeta({
                     border-t border-gray-200 dark:border-slate-700 py-2 px-4">
             <AbReactions :post="meta" variant="bar" :on-react="handleReact" />
         </div>
-
+        <!-- ── Back to top button ────────────────────────────────────── -->
+        <Transition enter-active-class="transition-all duration-300" enter-from-class="opacity-0 translate-y-4"
+            enter-to-class="opacity-100 translate-y-0" leave-active-class="transition-all duration-200"
+            leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-4">
+            <button v-if="showBackToTop" type="button" @click="scrollToTop" aria-label="Back to top"
+                class="fixed bottom-20 lg:bottom-8 right-6 z-40 w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-lg text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-400 dark:hover:border-indigo-500 hover:shadow-indigo-100 dark:hover:shadow-indigo-900/30 transition-all duration-150">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"
+                    aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+                </svg>
+            </button>
+        </Transition>
     </article>
 </template>
 

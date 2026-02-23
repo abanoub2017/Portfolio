@@ -209,7 +209,7 @@ Show 2–3 posts with the same category at the bottom of a post.
 
 ### 10. Reading Progress Bar
 
-**Status:** ☐ Not started  
+**Status:** ✅ Done  
 **File:** `src/views/BlogPostView.vue` (or a new `AbReadingProgress.vue`)
 
 Thin indigo bar fixed at top of viewport that fills as the reader scrolls.
@@ -225,7 +225,7 @@ Thin indigo bar fixed at top of viewport that fills as the reader scrolls.
 
 ### 11. Back to Top Button
 
-**Status:** ☐ Not started  
+**Status:** ✅ Done  
 **File:** `src/views/BlogPostView.vue`
 
 Floating button that appears after scrolling 400px, smooth-scrolls back to top.
