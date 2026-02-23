@@ -1,1 +1,0 @@
-import{S as l}from"./app-CiZuIbhI.js";function s(){function o(){l("blog_list_view")}function e(t,i,n){l("blog_post_view",{post_slug:t,post_title:i,category:n})}function r(t,i){l("blog_filter_applied",{filter_type:t,filter_value:i})}return{trackBlogListView:o,trackBlogPostView:e,trackFilterApplied:r}}export{s as u};
