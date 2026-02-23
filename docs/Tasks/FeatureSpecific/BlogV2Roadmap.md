@@ -193,7 +193,7 @@ Copy link + Twitter/X + LinkedIn share buttons below post title or at end of pos
 
 ### 9. Related Posts Section
 
-**Status:** ☐ Not started  
+**Status:** ✅ Done  
 **File:** `src/views/BlogPostView.vue`
 
 Show 2–3 posts with the same category at the bottom of a post.

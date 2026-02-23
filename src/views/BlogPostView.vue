@@ -7,6 +7,7 @@ import { useSeoStore } from '@/stores/seo'
 import AbPostReader from '@/components/blog/AbPostReader.vue'
 import AbReactions from '@/components/blog/AbReactions.vue'
 import AbShareButtons from '@/components/blog/AbShareButtons.vue'
+import AbBlogCard from '@/components/blog/AbBlogCard.vue'
 import { useBlogAnalytics } from '@/composables/useBlogAnalytics'
 import type { ReactionKey } from '@/types/blog'
 
@@ -31,6 +32,10 @@ onMounted(() => {
     if (slug.value && !blogStore.currentMeta) {
         blogStore.loadPostBySlug(slug.value)
     }
+    // Load post list in parallel for related posts (no-op if already loaded)
+    if (!blogStore.posts.length) {
+        blogStore.loadPublished()
+    }
 })
 
 // Fire analytics once meta has loaded
@@ -49,6 +54,14 @@ const content = computed(() => blogStore.currentContent)
 const isLoading = computed(() => blogStore.isLoading)
 const error = computed(() => blogStore.error)
 const notFound = computed(() => !isLoading.value && !error.value && !meta.value)
+
+// Related posts: same category, excluding current, max 3
+const relatedPosts = computed(() => {
+    if (!meta.value?.category) return []
+    return blogStore.posts
+        .filter(p => p.category === meta.value!.category && p.id !== meta.value!.id)
+        .slice(0, 3)
+})
 
 // ─── Formatting helpers ───────────────────────────────────────────────────────
 
@@ -256,7 +269,7 @@ useSeoMeta({
                     </div>
 
                     <!-- Bottom nav -->
-                    <div class="mt-16 pt-8 border-t border-gray-200 dark:border-slate-700">
+                    <div class="mt-10 pt-8 border-t border-gray-200 dark:border-slate-700">
                         <RouterLink to="/blog"
                             class="inline-flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-medium text-sm hover:underline">
                             ← Back to all posts
@@ -266,7 +279,18 @@ useSeoMeta({
                 </div> <!-- end main content -->
 
             </div> <!-- end flex row -->
-        </div> <!-- end max-w-5xl -->
+        </div> <!-- end max-w-4xl -->
+
+        <!-- ── Related posts (full-width, outside sidebar layout) ───────── -->
+        <div v-if="relatedPosts.length"
+            class="max-w-5xl mx-auto px-5 mt-16 pt-12 border-t border-gray-100 dark:border-slate-800">
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-8">
+                More in <span class="text-indigo-600 dark:text-indigo-400">{{ meta.category }}</span>
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <AbBlogCard v-for="p in relatedPosts" :key="p.id" :post="p" />
+            </div>
+        </div>
 
         <!-- ── Mobile fixed bottom reaction bar (<lg) ────────────────────── -->
         <div class="lg:hidden fixed bottom-0 inset-x-0 z-50
