@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
+    "prebuild": "tsx scripts/generate-rss.ts",
     "build": "vue-tsc --noEmit && vite-ssg build",
     "type-check": "vue-tsc --noEmit",
     "preview": "vite preview",

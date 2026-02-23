@@ -240,7 +240,7 @@ Floating button that appears after scrolling 400px, smooth-scrolls back to top.
 
 ### 12. RSS Feed
 
-**Status:** ☐ Not started  
+**Status:** ✅ Done  
 **Spec ref:** `Blog.md §11`
 
 Generated at build time. Deferred to after Phase 7 (SSG slugs) is working.
