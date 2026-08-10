@@ -26,6 +26,7 @@ import type { Section, SectionContent, SectionType } from '@/types/sections'
 
 const COLLECTION = 'sections'
 const col = () => collection(getDb(), COLLECTION)
+const sectionDoc = (id: string) => doc(getDb(), COLLECTION, id)
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -71,7 +72,7 @@ export async function fetchActiveSections(): Promise<Section[]> {
  * Fetch a single section by ID.
  */
 export async function fetchSection(id: string): Promise<Section | null> {
-    const snap = await getDoc(doc(db, COLLECTION, id))
+    const snap = await getDoc(sectionDoc(id))
     if (!snap.exists()) return null
     return snapToSection(snap)
 }
@@ -113,7 +114,7 @@ export async function upsertSection(
     content: SectionContent,
     isActive = true,
 ): Promise<void> {
-    await setDoc(doc(db, COLLECTION, id), {
+    await setDoc(sectionDoc(id), {
         id,
         type,
         order,
@@ -131,7 +132,7 @@ export async function patchSection(
     id: string,
     patch: Partial<Pick<Section, 'isActive' | 'order' | 'content'>>,
 ): Promise<void> {
-    await updateDoc(doc(db, COLLECTION, id), {
+    await updateDoc(sectionDoc(id), {
         ...patch,
         updatedAt: serverTimestamp(),
     })
@@ -144,7 +145,7 @@ export async function updateSectionContent(
     id: string,
     content: SectionContent,
 ): Promise<void> {
-    await updateDoc(doc(db, COLLECTION, id), {
+    await updateDoc(sectionDoc(id), {
         content,
         updatedAt: serverTimestamp(),
     })
@@ -154,7 +155,7 @@ export async function updateSectionContent(
  * Delete a section document.
  */
 export async function deleteSection(id: string): Promise<void> {
-    await deleteDoc(doc(db, COLLECTION, id))
+    await deleteDoc(sectionDoc(id))
 }
 
 /**
@@ -166,7 +167,7 @@ export async function reorderSections(
 ): Promise<void> {
     await Promise.all(
         items.map(({ id, order }) =>
-            updateDoc(doc(db, COLLECTION, id), {
+            updateDoc(sectionDoc(id), {
                 order,
                 updatedAt: serverTimestamp(),
             }),

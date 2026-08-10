@@ -1,26 +1,28 @@
 <template>
-    <a :href="link" target="_blank" rel="noopener noreferrer"
-        class="group relative rounded-2xl overflow-hidden border border-gray-100 dark:border-slate-700 shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 bg-white dark:bg-slate-800 flex flex-col"
+    <component :is="canVisit ? 'a' : 'article'" :href="canVisit ? link : undefined"
+        :target="canVisit ? '_blank' : undefined" :rel="canVisit ? 'noopener noreferrer' : undefined"
+        class="group relative rounded-2xl overflow-hidden border border-gray-100 dark:border-slate-700 shadow-md transition-all duration-300 bg-white dark:bg-slate-800 flex flex-col"
+        :class="canVisit ? 'hover:shadow-2xl hover:-translate-y-1' : 'cursor-default'"
         @click="trackCardClick">
 
         <!-- image -->
         <div class="relative overflow-hidden aspect-[16/10]">
-            <img :src="img"
+            <img v-if="img" :src="img"
                 class="w-full h-full object-cover object-top transition-all duration-500 group-hover:scale-105"
                 :class="{ 'opacity-0': !imageLoaded, 'opacity-100': imageLoaded }" @load="imageLoaded = true"
                 @error="imageError = true" loading="lazy" :alt="title" />
 
             <!-- skeleton -->
-            <div v-if="!imageLoaded && !imageError"
+            <div v-if="img && !imageLoaded && !imageError"
                 class="absolute inset-0 bg-gradient-to-r from-gray-200 to-gray-300 dark:from-slate-700 dark:to-slate-600 animate-pulse" />
             <!-- error -->
-            <div v-if="imageError"
+            <div v-if="!img || imageError"
                 class="absolute inset-0 bg-gray-100 dark:bg-slate-700 flex items-center justify-center">
                 <span class="text-xs text-gray-400">No preview</span>
             </div>
 
             <!-- hover overlay -->
-            <div
+            <div v-if="canVisit"
                 class="absolute inset-0 bg-indigo-900/80 flex flex-col items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <span class="text-white font-semibold text-sm tracking-wide">View Live</span>
                 <svg class="w-6 h-6 text-indigo-300" fill="none" stroke="currentColor" stroke-width="1.5"
@@ -39,11 +41,11 @@
                 {{ tag }}
             </span>
         </div>
-    </a>
+    </component>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useAnalytics } from '@/composables/useAnalytics'
 
 const imageLoaded = ref<boolean>(false)
@@ -56,8 +58,11 @@ const props = defineProps<{
     tag?: string
 }>()
 
+const canVisit = computed(() => Boolean(props.link.trim()))
+
 const { trackCard } = useAnalytics()
 function trackCardClick(): void {
+    if (!canVisit.value) return
     trackCard(props.link)
 }
 </script>

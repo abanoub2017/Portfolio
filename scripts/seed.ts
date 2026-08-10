@@ -179,6 +179,7 @@ const sections = [
         isActive: true,
         content: {
             items: [
+                { id: 'aghasan', title: 'Aghasan', link: '', tag: 'In Progress', imageBase64: '' },
                 { id: 'kemitt', title: 'Kemitt', link: 'https://www.kemitt.com/', tag: 'E-Commerce', imageBase64: '' },
                 { id: 'nabd', title: 'Nabd', link: 'https://ads.nabd.com/', tag: 'Ad Platform', imageBase64: '' },
                 { id: 'nabd-deals', title: 'Nabd Deals', link: 'https://deals.nabd.com/', tag: 'E-Commerce', imageBase64: '' },

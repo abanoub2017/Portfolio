@@ -7,6 +7,7 @@ export interface WorkItem {
 
 /** Portfolio work/project list. Add or remove entries here to update the Works section. */
 export const workList: WorkItem[] = [
+  { link: '', img: '', content: 'Aghasan', tag: 'In Progress' },
   { link: 'https://www.kemitt.com/', img: 'kemitt.png', content: 'Kemitt', tag: 'E-Commerce' },
   { link: 'https://ads.nabd.com/', img: 'Nabd.png', content: 'Nabd', tag: 'Ad Platform' },
   { link: 'https://deals.nabd.com/', img: 'NabdDeals.png', content: 'Nabd Deals', tag: 'E-Commerce' },
